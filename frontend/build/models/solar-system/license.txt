@@ -1,0 +1,11 @@
+Model Information:
+* title:	Orrery
+* source:	https://sketchfab.com/3d-models/orrery-44849150982d4c228fca951a66df604f
+* author:	buttr_toes (https://sketchfab.com/buttr_toes)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Orrery" (https://sketchfab.com/3d-models/orrery-44849150982d4c228fca951a66df604f) by buttr_toes (https://sketchfab.com/buttr_toes) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

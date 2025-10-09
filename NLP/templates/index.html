@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactic Data Validator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* Alien Tech Flat Colors */
+        :root {
+            --color-bg-primary: #1A1A2E; /* Deep blue-purple, main background */
+            --color-bg-secondary: #2C2C40; /* Slightly lighter for containers */
+            --color-accent: #00FFFF; /* Vibrant Cyan */
+            --color-text-light: #E0E0E0; /* Light grey for general text */
+            --color-text-dark: #8A8A9E; /* Muted grey for subtle text */
+            --color-success: #39FF14; /* Neon Green */
+            --color-error: #E74C3C; /* Striking Red */
+            --color-border: #44445A; /* Subtle border for tech feel */
+            --color-button-hover: #00C0C0; /* Darker cyan for hover */
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace; /* Futuristic font */
+            margin: 0; /* Remove default body margin */
+            padding: 20px;
+            background-color: var(--color-bg-primary);
+            color: var(--color-text-light);
+            display: flex; /* Use flexbox to center content */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Full viewport height */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--color-bg-secondary);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); /* Glowing shadow */
+            border: 1px solid var(--color-border);
+            box-sizing: border-box;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            color: var(--color-accent);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); /* Subtle glow effect */
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .file-upload-section, .results-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            background-color: var(--color-bg-primary); /* Darker internal panels */
+            box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.1); /* Inner glow */
+        }
+
+        .file-upload-section label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: var(--color-text-light);
+            text-transform: uppercase;
+        }
+
+        .file-upload-section input[type="file"] {
+            display: block;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            width: calc(100% - 22px); /* Account for padding + border */
+            background-color: var(--color-bg-secondary);
+            color: var(--color-text-light);
+            cursor: pointer;
+            outline: none; /* Remove default outline */
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .file-upload-section input[type="file"]:hover {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+        }
+        /* Custom file input appearance for better flat design */
+        .file-upload-section input[type="file"]::-webkit-file-upload-button {
+            background-color: var(--color-accent);
+            color: var(--color-bg-primary);
+            padding: 8px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.2s;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .file-upload-section input[type="file"]::-webkit-file-upload-button:hover {
+            background-color: var(--color-button-hover);
+        }
+        .file-upload-section input[type="file"]::file-selector-button { /* Firefox */
+            background-color: var(--color-accent);
+            color: var(--color-bg-primary);
+            padding: 8px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.2s;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .file-upload-section input[type="file"]::file-selector-button:hover { /* Firefox */
+            background-color: var(--color-button-hover);
+        }
+
+
+        .file-upload-section button {
+            background-color: var(--color-accent);
+            color: var(--color-bg-primary);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+        .file-upload-section button:hover {
+            background-color: var(--color-button-hover);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid; /* For consistency */
+            font-size: 0.95em;
+        }
+        .message.success {
+            background-color: rgba(57, 255, 20, 0.15); /* Light green tint */
+            color: var(--color-success);
+            border-color: var(--color-success);
+        }
+        .message.error {
+            background-color: rgba(231, 76, 60, 0.15); /* Light red tint */
+            color: var(--color-error);
+            border-color: var(--color-error);
+        }
+
+        .results-section h2 {
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .results-section h3 {
+            color: var(--color-text-light);
+            text-align: left; /* Align h3 to the left */
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+            text-transform: capitalize; /* Just for results sub-headers */
+        }
+
+        /* Table specific styles for alien tech look */
+        .results-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: var(--color-bg-primary); /* Darker panel for tables */
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            overflow: hidden; /* Ensures border-radius applies to contents */
+        }
+
+        .results-section th, .results-section td {
+            border: 1px solid var(--color-border); /* Thinner, consistent borders */
+            padding: 10px;
+            text-align: left;
+            word-break: break-word; /* Allow long words to break */
+        }
+
+        .results-section th {
+            background-color: var(--color-bg-secondary); /* Header row slightly lighter */
+            color: var(--color-accent); /* Header text in accent color */
+            font-weight: normal; /* Flat design often uses lighter weights */
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+            white-space: nowrap; /* Prevent wrapping for headers */
+        }
+        /* Style for table body rows */
+        .results-section tbody tr {
+            background-color: var(--color-bg-primary); /* Consistent dark background for rows */
+        }
+        .results-section tbody tr:nth-child(even) {
+             background-color: rgba(0, 255, 255, 0.03); /* Subtle alternating row color */
+        }
+        .results-section tbody td {
+            color: var(--color-text-light); /* Data text in light grey */
+            font-size: 0.9em;
+        }
+
+        /* NEW STYLE: Highlight faulty cells */
+        .results-section .failed-rows .highlight-error-cell {
+            border: 2px solid var(--color-error); /* Red border */
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.6); /* Red glow */
+            background-color: rgba(231, 76, 60, 0.1); /* Subtle red background */
+            position: relative; /* Needed for pseudo-elements or other absolute positioning if desired */
+            z-index: 0; /* Ensure it's above other cells if needed, but below popups */
+            transition: all 0.2s ease-in-out; /* Smooth transition for hover if implemented */
+        }
+
+
+        /* Scrollable Table Containers */
+        .passed-rows table, .failed-rows table {
+            display: block; /* Make table behave like a block for overflow */
+            max-height: 300px; /* Limit height to enable vertical scrolling */
+            overflow-y: auto; /* Enable vertical scrolling */
+            width: fit-content; /* Shrink table to content width for horizontal scroll */
+            min-width: 100%; /* Ensure it still takes full width if content fits */
+            box-sizing: border-box; /* Include padding/border in width calculation */
+            /* Add horizontal scrolling for tables */
+            overflow-x: auto;
+        }
+
+        /* Ensure table header sticks during vertical scroll (optional, but good for UX) */
+        .results-section thead {
+            position: sticky;
+            top: 0;
+            background-color: var(--color-bg-secondary); /* Match header background */
+            z-index: 1; /* Keep header above scrolling content */
+        }
+
+
+        .failed-rows {
+            color: var(--color-error); /* Error color for failed rows general text */
+        }
+
+        .loading-spinner {
+            display: none; /* Hidden by default */
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.1em;
+            color: var(--color-text-light);
+        }
+        .loading-spinner img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+            /* Add a subtle glow to the spinner if it's a static image */
+            filter: drop-shadow(0 0 5px var(--color-accent));
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 20px;
+            }
+            .file-upload-section input[type="file"] {
+                width: calc(100% - 20px);
+            }
+            .file-upload-section button {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+            .results-section th, .results-section td {
+                padding: 8px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>// Galactic Data Validator //</h1>
+
+        <div class="file-upload-section">
+            <label for="validationFile">Deploy Validation Schema (.txt or .json):</label>
+            <input type="file" id="validationFile" name="validation_file" accept=".txt, .json">
+
+            <label for="dataFile">Inject Data Stream (.csv):</label>
+            <input type="file" id="dataFile" name="csv_file" accept=".csv">
+
+            <button onclick="uploadFiles()">Initiate Validation Sequence</button>
+            <div id="message" class="message" style="display:none;"></div>
+            <div class="loading-spinner" id="loadingSpinner">
+                <img src="https://i.giphy.com/media/3ov9jKQbfWvDNu2Z0s/giphy.gif?cid=ecf05e474in3sixcw6fjgg9snuhqqeo2fd9xkyo2son46vdu" alt="Processing data stream...">
+                <p>Processing data stream and generating validation code (this may take a moment)...</p>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <h2>// Validation Log //</h2>
+            <div class="passed-rows" id="passedRowsContainer">
+                <h3>// Validated Rows //</h3>
+                <p id="noPassedRows" style="display:block;">No data segments passed validation.</p>
+                <table id="passedTable" style="display:none;">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="failed-rows" id="failedRowsContainer">
+                <h3>// Corrupted Data Segments //</h3>
+                <p id="noFailedRows" style="display:block;">No data segments failed validation.</p>
+                <table id="failedTable" style="display:none;">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function uploadFiles() {
+            const validationFile = document.getElementById('validationFile').files[0];
+            const dataFile = document.getElementById('dataFile').files[0];
+            const messageDiv = document.getElementById('message');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            // --- Reset UI state before new validation ---
+            messageDiv.style.display = 'none';
+            messageDiv.className = 'message';
+            messageDiv.textContent = '';
+
+            document.getElementById('passedTable').style.display = 'none';
+            document.getElementById('passedTable').querySelector('thead').innerHTML = '';
+            document.getElementById('passedTable').querySelector('tbody').innerHTML = '';
+            document.getElementById('noPassedRows').style.display = 'block';
+
+            document.getElementById('failedTable').style.display = 'none';
+            document.getElementById('failedTable').querySelector('thead').innerHTML = '';
+            document.getElementById('failedTable').querySelector('tbody').innerHTML = '';
+            document.getElementById('noFailedRows').style.display = 'block';
+            // --- End Reset UI state ---
+
+
+            if (!validationFile || !dataFile) {
+                showMessage('PROTOCOL VIOLATION: Select both schema and data files.', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('validation_file', validationFile);
+            formData.append('csv_file', dataFile);
+
+            loadingSpinner.style.display = 'block'; // Show the loading spinner
+
+            try {
+                const response = await fetch('/validate', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    let errorData;
+                    try {
+                        errorData = await response.json();
+                    } catch (e) {
+                        const rawText = await response.text();
+                        errorData = { error: `SERVER MALFUNCTION: Status ${response.status} ${response.statusText}. Invalid JSON response. Payload fragment: ${rawText.substring(0, 100)}...` };
+                        console.error("Failed to parse error response as JSON:", e, rawText);
+                    }
+                    showMessage(`ERROR: ${errorData.error || 'UNKNOWN SERVER ANOMALY.'}`, 'error');
+                    return;
+                }
+
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    showMessage('VALIDATION COMPLETE: All systems nominal.', 'success');
+                    displayResults(result.passed_rows || [], result.invalid_rows || []);
+                } else {
+                    showMessage(`VALIDATION FAILED: ${result.error || 'UNSPECIFIED ERROR.'}`, 'error');
+                    displayResults([], []);
+                }
+
+            } catch (error) {
+                console.error('NETWORK ABORT or DATA CORRUPTION:', error);
+                showMessage(`NETWORK ABORT: ${error.message}. Consult system logs for details.`, 'error');
+            } finally {
+                loadingSpinner.style.display = 'none'; // IMPORTANT: Always hide the spinner
+            }
+        }
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+        }
+
+        function displayResults(passedRows, failedRows) {
+            const passedTable = document.getElementById('passedTable');
+            const failedTable = document.getElementById('failedTable');
+            const noPassedRows = document.getElementById('noPassedRows');
+            const noFailedRows = document.getElementById('noFailedRows');
+
+            // Helper function to extract potential column names from the failure reason sentence
+            // This is a heuristic and might need fine-tuning based on actual failure reason formats.
+            function extractPotentialColumnNames(reason, allColumnHeaders) {
+                if (!reason) return [];
+
+                const foundColumns = new Set(); // Use a Set to avoid duplicates
+                const lowerCaseReason = reason.toLowerCase();
+
+                // Create a map of normalized (lowercase, no spaces) headers to original headers
+                const normalizedHeadersMap = new Map();
+                allColumnHeaders.forEach(header => {
+                    // Only consider actual data headers, not 'row_number' or 'failure_reason'
+                    if (header !== 'row_number' && header !== 'failure_reason') {
+                         // Normalize header for comparison (e.g., 'AddressLine1' becomes 'addressline1')
+                        normalizedHeadersMap.set(header.toLowerCase().replace(/[^a-z0-9]/g, ''), header);
+                    }
+                });
+
+                // Strategy 1: Look for exact header matches (case-insensitive)
+                allColumnHeaders.forEach(header => {
+                    if (header !== 'row_number' && header !== 'failure_reason') {
+                        // Use a regex with word boundaries to ensure 'Age' doesn't match 'Manager'
+                        const regex = new RegExp(`\\b${header}\\b`, 'i');
+                        if (regex.test(lowerCaseReason)) {
+                            foundColumns.add(header);
+                        }
+                    }
+                });
+
+                // Strategy 2: Look for words in the reason that match *parts* of headers or normalized headers
+                // This is more aggressive and might lead to false positives if not careful.
+                // For simplicity, we'll try matching normalized header names against normalized reason.
+                normalizedHeadersMap.forEach((originalHeader, normalizedHeader) => {
+                    // Check if the normalized reason contains the normalized header.
+                    // This might be too broad; consider using a more sophisticated NLP library if needed.
+                    if (lowerCaseReason.includes(normalizedHeader)) {
+                        foundColumns.add(originalHeader);
+                    }
+                });
+
+
+                // Add more sophisticated parsing here if your error messages are highly structured:
+                // e.g., if you know "Column X failed" or "Issue with Y and Z"
+                // Example: Extracting names from "Fields FirstName and LastName cannot be null."
+                const fieldListMatch = reason.match(/(?:(?:fields?|columns?)\s+)?([a-zA-Z0-9_, ]+?)\s+can(?:not|'t)/i);
+                if (fieldListMatch && fieldListMatch[1]) {
+                    const candidateNames = fieldListMatch[1].split(/,\s*|\s+and\s+/i);
+                    candidateNames.forEach(candidate => {
+                        const trimmedCandidate = candidate.trim();
+                        // Find original header that matches the candidate (case-insensitive, normalized)
+                        for (const [normHeader, origHeader] of normalizedHeadersMap.entries()) {
+                            if (normHeader.includes(trimmedCandidate.toLowerCase().replace(/[^a-z0-9]/g, '')) && origHeader !== 'row_number' && origHeader !== 'failure_reason') {
+                                foundColumns.add(origHeader);
+                            }
+                        }
+                    });
+                }
+
+                return Array.from(foundColumns);
+            }
+
+
+            function populateTable(table, rows, isFailedTable = false) {
+                const thead = table.querySelector('thead');
+                const tbody = table.querySelector('tbody');
+                thead.innerHTML = '';
+                tbody.innerHTML = '';
+
+                if (!rows || rows.length === 0) {
+                    table.style.display = 'none';
+                    return false;
+                }
+
+                let headers = [];
+                // Determine headers for the table. Prioritize 'row_data' keys if present.
+                if (rows[0] && rows[0].row_data) {
+                    const dataKeys = Object.keys(rows[0].row_data);
+                    headers = ['row_number', ...dataKeys];
+                    if (rows[0].failure_reason !== undefined) {
+                        headers.push('failure_reason');
+                    }
+                } else if (rows[0]) {
+                    // For passed rows where rowData itself is the dictionary
+                    headers = Object.keys(rows[0]);
+                    headers.unshift('row_number');
+                } else {
+                    return false; // No data to display headers
+                }
+
+                const headerRow = document.createElement('tr');
+                headers.forEach(headerText => {
+                    const th = document.createElement('th');
+                    if (headerText === 'row_number') {
+                        th.textContent = 'Row No.';
+                    } else if (headerText === 'failure_reason') {
+                        th.textContent = 'Reason for Failure';
+                    } else {
+                        let readableHeaderText = headerText.replace(/([A-Z])/g, ' $1').trim();
+                        readableHeaderText = readableHeaderText.replace('Number', '#').replace('Id', 'ID');
+                        readableHeaderText = readableHeaderText.replace('Postal Code', 'Zip Code').replace('Address', 'Coord').replace('Line', 'Lvl');
+                        th.textContent = readableHeaderText;
+                    }
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+
+                rows.forEach((rowData, index) => {
+                    const tr = document.createElement('tr');
+                    let faultyColumnNames = [];
+
+                    if (isFailedTable && rowData.failure_reason) {
+                        // Pass the list of all potential data column headers to the extraction function
+                        const allDataHeaders = headers.filter(h => h !== 'row_number' && h !== 'failure_reason');
+                        faultyColumnNames = extractPotentialColumnNames(rowData.failure_reason, allDataHeaders);
+                    }
+
+                    headers.forEach(headerText => {
+                        const td = document.createElement('td');
+                        let cellValue;
+
+                        if (headerText === 'row_number') {
+                            cellValue = rowData.row_number || (index + 2); // Fallback to index + 2 if row_number isn't explicitly provided
+                        } else if (headerText === 'failure_reason') {
+                            cellValue = rowData.failure_reason;
+                        } else if (rowData.row_data && headerText in rowData.row_data) {
+                            cellValue = rowData.row_data[headerText];
+                        } else if (headerText in rowData) { // This handles the case for `passed_rows` directly
+                            cellValue = rowData[headerText];
+                        } else {
+                            cellValue = undefined; // Default if column not found
+                        }
+
+                        if (cellValue === null || cellValue === undefined || String(cellValue).trim() === '') {
+                            td.textContent = '-';
+                        } else {
+                            td.textContent = cellValue;
+                        }
+
+                        // Apply highlight class if this is the failed table AND this cell's header is in the faultyColumnNames list
+                        if (isFailedTable && faultyColumnNames.includes(headerText)) {
+                            td.classList.add('highlight-error-cell');
+                        }
+
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+                table.style.display = 'table';
+                return true;
+            }
+
+            // Populate and show/hide tables based on data availability
+            const passedPopulated = populateTable(passedTable, passedRows, false); // No highlighting for passed rows
+            if (!passedPopulated) {
+                noPassedRows.style.display = 'block';
+                passedTable.style.display = 'none';
+            } else {
+                noPassedRows.style.display = 'none';
+                passedTable.style.display = 'table';
+            }
+
+            const failedPopulated = populateTable(failedTable, failedRows, true); // Highlight for failed rows
+            if (!failedPopulated) {
+                noFailedRows.style.display = 'block';
+                failedTable.style.display = 'none';
+            } else {
+                noFailedRows.style.display = 'none';
+                failedTable.style.display = 'table';
+            }
+        }
+    </script>
+</body>
+</html>

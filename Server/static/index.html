@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>API Terminal - Hacker Mode</title>
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #00ff00;
+      font-family: "Courier New", monospace;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: black;
+      padding: 20px;
+      border-bottom: 2px solid #00ff00;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      color: #00ff00;
+      font-size: 24px;
+      text-shadow: 0 0 8px #00ff00;
+    }
+
+    header p {
+      margin: 5px 0 0;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #000;
+      box-shadow: 0 0 20px rgba(0,255,0,0.2);
+    }
+
+    th, td {
+      border: 1px solid #00ff00;
+      padding: 8px;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      background: #0f0f0f;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    tr:hover {
+      background: rgba(0,255,0,0.1);
+    }
+
+    button {
+      background: black;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      padding: 5px 10px;
+      font-family: "Courier New", monospace;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      background: #00ff00;
+      color: black;
+    }
+
+    textarea, input[type="text"], input[type="file"] {
+      width: 100%;
+      background: #111;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      padding: 4px;
+      font-family: "Courier New", monospace;
+      font-size: 12px;
+    }
+
+    pre {
+      background: #111;
+      color: #00ff00;
+      padding: 8px;
+      border: 1px solid #00ff00;
+      border-radius: 4px;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    /* Blinking cursor effect */
+    .cursor::after {
+      content: "▋";
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>💻 API Terminal</h1>
+    <p class="cursor">FastAPI Hacker Console Active...</p>
+  </header>
+
+  <main>
+    <table id="api-table">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Path</th>
+          <th>Description</th>
+          <th>Inputs</th>
+          <th>Action</th>
+          <th>Response</th>
+        </tr>
+      </thead>
+      <tbody id="api-list"></tbody>
+    </table>
+  </main>
+
+  <script src="/home/app.js"></script>
+</body>
+</html>

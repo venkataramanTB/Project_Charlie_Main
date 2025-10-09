@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pandas
+openpyxl
+pydantic
+python-multipart 
+requests
+python-dateutil 
+numpy
+dotenv
+httpx
+ollama
+psutil

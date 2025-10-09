@@ -1,0 +1,22 @@
+{
+    "validations": [
+        { 
+            "METADATA": "",
+            "PersonAddress": "",
+            "CRAWFORD": "",
+            "US_ADD_HOME": "",
+            "PersonNumber": "",
+            "EffectiveStartDate": "Should be after 01/01/2023",
+            "AddressType": "",
+            "Country": "",
+            "AddressLine1": "",
+            "AddressLine2": "",
+            "TownOrCity": "",
+            "Region2": "",
+            "PostalCode": "",
+            "Region1": "Should have 'New' in it",
+            "PrimaryFlag": ""
+        
+        }
+    ]
+}

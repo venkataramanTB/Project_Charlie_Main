@@ -1,0 +1,21 @@
+METADATA,PersonAddress,CRAWFORD,US_ADD_HOME,PersonNumber,EffectiveStartDate,AddressType,Country,AddressLine1,AddressLine2,TownOrCity,Region2,PostalCode,Region1,PrimaryFlag
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_1,1,5/15/2023,HOME,US,101 Main St,,Anytown,NY,10001,New York,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_2,2,1/20/2024,HOME,CA,22 Maple Rd,,Toronto,ON,M5S1A1,Ontario,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_3,3,5/1/2023,HOME,GB,Flat 4, 10 Downing St,London,ENG,SW1A 2AA,Greater London,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_4,4,11/5/2022,HOME,US,789 Oak Ave,Apt 3B,Springfield,IL,62704,Sangamon,N
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_5,5,5/25/2023,HOME,US,123 Pine Ln,,Smallville,GA,30303,Fulton,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_6,6,6/10/2023,HOME,AU,Unit 5, 20 Elizabeth St,Sydney,NSW,2000,New South Wales,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_7,7,5/9/2023,HOME,US,45 Elm St,,Centerville,OH,45459,Montgomery,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_8,8,2/14/2023,HOME,DE,Berliner Str. 1,,Berlin,BE,10115,Berlin,N
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_9,9,5/30/2023,HOME,US,876 Spruce Rd,,Rivertown,WA,98101,King,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_10,10,7/1/2023,HOME,IE,1 Grand Canal St Upper,,Dublin,D2,D02 F902,Dublin,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_11,11,5/18/2023,HOME,US,321 Cedar Blvd,,Lakewood,CO,80226,Jefferson,N
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_12,12,5/7/2023,HOME,FR,22 Rue de la Paix,,Paris,IDF,75002,Paris,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_13,13,9/12/2023,HOME,US,55 High St,,Hillside,TX,78701,Travis,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_14,14,5/11/2023,HOME,JP,1-1-1 Marunouchi,,Tokyo,13,100-0005,Tokyo,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_15,15,10/1/2023,HOME,US,900 Forest Dr,,Greenville,SC,29601,Greenville,N
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_16,16,5/3/2023,HOME,MX,Av. Insurgentes Sur 123,,Mexico City,DIF,3920,Mexico City,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_17,17,4/22/2023,HOME,US,606 Bayview Ave,,Oceanside,CA,92054,San Diego,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_18,18,5/29/2023,HOME,IN,123 MG Road,,Bengaluru,KA,560001,Karnataka,Y
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_19,19,8/8/2023,HOME,US,200 River St,,Deltaville,VA,23043,Middlesex,N
+MERGE,PersonAddress,CRAWFORD,US_ADD_HOME_20,20,5/19/2023,HOME,US,543 Willow Creek Rd,,Harmony,PA,16037,Butler,Y

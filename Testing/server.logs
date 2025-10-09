@@ -1,0 +1,17 @@
+2025-08-26 20:00:29,297 - DEBUG - connect_tcp.started host='ejir-test.fa.us6.oraclecloud.com' port=443 local_address=None timeout=90.0 socket_options=None
+2025-08-26 20:00:29,479 - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000024E9B9ED6A0>
+2025-08-26 20:00:29,479 - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000024E9AF71D90> server_hostname='ejir-test.fa.us6.oraclecloud.com' timeout=90.0
+2025-08-26 20:00:29,487 - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000024E9B989D10>
+2025-08-26 20:00:29,487 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-08-26 20:00:29,492 - DEBUG - send_request_headers.complete
+2025-08-26 20:00:29,492 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-08-26 20:00:29,493 - DEBUG - send_request_body.complete
+2025-08-26 20:00:29,493 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-08-26 20:00:31,852 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/soap+xml; charset=UTF-8'), (b'Referrer-Policy', b'origin'), (b'X-Content-Type-Options', b'nosniff'), (b'Cache-Control', b'no-store'), (b'Pragma', b'no-cache'), (b'X-ORACLE-DMS-ECID', b'006FKM3^5Ni2zGT6yBAhMG008p_50000vs'), (b'X-ORACLE-DMS-RID', b'0:3'), (b'Content-Security-Policy', b"default-src 'self' ; script-src 'self' 'unsafe-inline' 'unsafe-eval' ; style-src 'self' 'unsafe-inline' ; style-src-elem 'self'  'unsafe-inline'; img-src 'self'  data:; frame-src 'self'  data:; media-src 'none'; frame-ancestors 'self'"), (b'Content-Encoding', b'gzip'), (b'X-XSS-Protection', b'1; mode=block'), (b'Content-Language', b'en'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains'), (b'Date', b'Tue, 26 Aug 2025 14:30:31 GMT'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Vary', b'Accept-Encoding'), (b'Connection', b'Transfer-Encoding'), (b'Set-Cookie', b'JSESSIONID=; expires=Thu, 01-Jan-1970 01:00:00 GMT; path=/xmlpserver; HttpOnly;SameSite=None;Secure'), (b'Set-Cookie', b'_WL_AUTHCOOKIE_JSESSIONID=; expires=Thu, 01-Jan-1970 01:00:00 GMT; path=/xmlpserver; secure; HttpOnly;SameSite=None;Secure'), (b'AKGRN', b'0.d7d70b17.1756218629.3f7b79e')])
+2025-08-26 20:00:31,852 - INFO - HTTP Request: POST https://ejir-test.fa.us6.oraclecloud.com/xmlpserver/services/ExternalReportWSSService?wsdl "HTTP/1.1 200 OK"
+2025-08-26 20:00:31,852 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-08-26 20:00:32,924 - DEBUG - receive_response_body.complete
+2025-08-26 20:00:32,924 - DEBUG - response_closed.started
+2025-08-26 20:00:32,924 - DEBUG - response_closed.complete
+2025-08-26 20:00:32,930 - DEBUG - close.started
+2025-08-26 20:00:32,930 - DEBUG - close.complete
