@@ -1,0 +1,858 @@
+2025-10-10 12:46:11,620 - root - DEBUG - Resolved column mapping in build_hierarchy_from_df: file=File Name, template=Template Name, mandatory=Mandatory_Objects, required_helper=Required - Helper Text, supported_helper=Supported Action - Helper Text, level_cols={3: 'Level-3', 4: 'Level-4', 5: 'Level-5', 6: 'Level-6', 7: 'Level-7', 8: 'Level-8', 9: 'Level-9', 10: 'Level-10'}
+2025-10-10 12:46:11,664 - root - DEBUG - Resolved column mapping in build_hierarchy_from_df: file=File Name, template=Template Name, mandatory=Mandatory_Objects, required_helper=Required - Helper Text, supported_helper=Supported Action - Helper Text, level_cols={3: 'Level-3', 4: 'Level-4', 5: 'Level-5', 6: 'Level-6', 7: 'Level-7', 8: 'Level-8', 9: 'Level-9', 10: 'Level-10'}
+2025-10-10 12:46:20,155 - Main - WARNING - oracle credentials are, https://ejir-test.fa.us6.oraclecloud.com, vikas.sharma@smarterp.com, Vik@s#2024
+2025-10-10 12:46:20,171 - Main - INFO - SOAP request saved at: Venkataraman\Test\soap_temp_storage\soap_request_Lookup_Data_saved.xml
+2025-10-10 12:46:20,671 - Main - INFO - Making SOAP request to https://ejir-test.fa.us6.oraclecloud.com/xmlpserver/services/ExternalReportWSSService?wsdl with user vikas.sharma@smarterp.com
+2025-10-10 12:46:20,672 - httpcore.connection - DEBUG - connect_tcp.started host='ejir-test.fa.us6.oraclecloud.com' port=443 local_address=None timeout=90 socket_options=None
+2025-10-10 12:46:20,835 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x0000022DA2B3DBE0>
+2025-10-10 12:46:20,836 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000022DA2B24E60> server_hostname='ejir-test.fa.us6.oraclecloud.com' timeout=90
+2025-10-10 12:46:20,859 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x0000022DA1A8B4D0>
+2025-10-10 12:46:20,859 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-10-10 12:46:20,860 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-10-10 12:46:20,860 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-10-10 12:46:20,860 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-10-10 12:46:20,861 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-10-10 12:46:20,931 - Main - WARNING - oracle credentials are, https://ejir-test.fa.us6.oraclecloud.com, vikas.sharma@smarterp.com, Vik@s#2024
+2025-10-10 12:46:20,941 - Main - INFO - SOAP request saved at: Venkataraman\Test\soap_temp_storage\soap_request_Mandatory_Fields_saved.xml
+2025-10-10 12:46:21,136 - Main - INFO - Making SOAP request to https://ejir-test.fa.us6.oraclecloud.com/xmlpserver/services/ExternalReportWSSService?wsdl with user vikas.sharma@smarterp.com
+2025-10-10 12:46:21,137 - httpcore.connection - DEBUG - connect_tcp.started host='ejir-test.fa.us6.oraclecloud.com' port=443 local_address=None timeout=90 socket_options=None
+2025-10-10 12:46:21,151 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x0000022DA2AEDA90>
+2025-10-10 12:46:21,151 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000022DA2B25520> server_hostname='ejir-test.fa.us6.oraclecloud.com' timeout=90
+2025-10-10 12:46:21,161 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x0000022DA2ABDF30>
+2025-10-10 12:46:21,161 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-10-10 12:46:21,162 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-10-10 12:46:21,162 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-10-10 12:46:21,163 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-10-10 12:46:21,163 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-10-10 12:46:38,339 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:38,340 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-10-10 12:46:38,340 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:92]
+2025-10-10 12:46:38,340 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:38,340 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:38,340 - python_multipart.multipart - DEBUG - Calling on_part_data with data[96:102]
+2025-10-10 12:46:38,341 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:38,341 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:38,341 - python_multipart.multipart - DEBUG - Calling on_header_field with data[146:165]
+2025-10-10 12:46:38,341 - python_multipart.multipart - DEBUG - Calling on_header_value with data[167:262]
+2025-10-10 12:46:38,341 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:38,341 - python_multipart.multipart - DEBUG - Calling on_header_field with data[264:276]
+2025-10-10 12:46:38,341 - python_multipart.multipart - DEBUG - Calling on_header_value with data[278:343]
+2025-10-10 12:46:38,341 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:38,341 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:38,341 - python_multipart.multipart - DEBUG - Calling on_part_data with data[347:38069]
+2025-10-10 12:46:38,341 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:38,341 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38113:38132]
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38134:38169]
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38173:38177]
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38221:38240]
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38242:38272]
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38276:38288]
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:38,342 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:38,343 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38332:38351]
+2025-10-10 12:46:38,343 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38353:38383]
+2025-10-10 12:46:38,343 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:38,343 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:38,343 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38387:38391]
+2025-10-10 12:46:38,343 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:38,343 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:38,343 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38435:38454]
+2025-10-10 12:46:38,343 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38456:38485]
+2025-10-10 12:46:38,343 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:38,344 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:38,344 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38489:38491]
+2025-10-10 12:46:38,344 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:38,344 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:38,344 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38535:38554]
+2025-10-10 12:46:38,344 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38556:38586]
+2025-10-10 12:46:38,344 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:38,344 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:38,344 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38590:38592]
+2025-10-10 12:46:38,344 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:38,344 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:38,345 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38636:38655]
+2025-10-10 12:46:38,345 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38657:38686]
+2025-10-10 12:46:38,345 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:38,346 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:38,346 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38690:38692]
+2025-10-10 12:46:38,346 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:38,346 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:38,346 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38736:38755]
+2025-10-10 12:46:38,346 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38757:38798]
+2025-10-10 12:46:38,346 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:38,347 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:38,347 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38802:38804]
+2025-10-10 12:46:38,347 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:38,347 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:38,347 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38848:38867]
+2025-10-10 12:46:38,347 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38869:38908]
+2025-10-10 12:46:38,347 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:38,347 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:38,348 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38912:38979]
+2025-10-10 12:46:38,348 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:38,348 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:38,348 - python_multipart.multipart - DEBUG - Calling on_header_field with data[39023:39042]
+2025-10-10 12:46:38,348 - python_multipart.multipart - DEBUG - Calling on_header_value with data[39044:39087]
+2025-10-10 12:46:38,348 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:38,348 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:38,348 - python_multipart.multipart - DEBUG - Calling on_part_data with data[39091:39687]
+2025-10-10 12:46:38,348 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:38,348 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-10-10 12:46:38,350 - Main - INFO - Created directory structure: uploads\Excel_Files\Venkataraman\Test\Worker
+2025-10-10 12:46:38,350 - Main - INFO - ✅ Parsed Actions: Term=[], Hire=[], GT=[]
+2025-10-10 12:46:38,418 - Main - INFO - [✅] Saved sheet 'Worker' to 'Worker.xlsx'
+2025-10-10 12:46:38,441 - Main - INFO - [✅] Saved sheet 'PersonName' to 'PersonName.xlsx'
+2025-10-10 12:46:38,476 - Main - INFO - [✅] Saved sheet 'WorkRelationship' to 'WorkRelationship.xlsx'
+2025-10-10 12:46:38,521 - Main - INFO - [✅] Saved sheet 'WorkTerms' to 'WorkTerms.xlsx'
+2025-10-10 12:46:38,560 - Main - INFO - [✅] Saved sheet 'Assignment' to 'Assignment.xlsx'
+2025-10-10 12:46:38,589 - Main - INFO - [✅] Saved sheet 'Contract' to 'Contract.xlsx'
+2025-10-10 12:46:38,612 - Main - INFO - [✅] Saved sheet 'PersonNationalIdentifier' to 'PersonNationalIdentifier.xlsx'
+2025-10-10 12:46:38,639 - Main - INFO - [✅] Saved sheet 'PersonReligion' to 'PersonReligion.xlsx'
+2025-10-10 12:46:38,666 - Main - INFO - [✅] Saved sheet 'PersonAddress' to 'PersonAddress.xlsx'
+2025-10-10 12:46:38,702 - Main - INFO - [✅] Saved sheet 'PersonCitizenship' to 'PersonCitizenship.xlsx'
+2025-10-10 12:46:38,727 - Main - INFO - [✅] Saved sheet 'PersonEmail' to 'PersonEmail.xlsx'
+2025-10-10 12:46:38,758 - Main - INFO - [✅] Saved sheet 'PersonEthnicity' to 'PersonEthnicity.xlsx'
+2025-10-10 12:46:38,759 - Main - INFO - Running populate_actual_termination_date_from_resignation for uploads\Excel_Files\Venkataraman\Test\Worker\WorkRelationship.xlsx
+2025-10-10 12:46:38,759 - Main - INFO - Running validate_workrelationship_sheet for uploads\Excel_Files\Venkataraman\Test\Worker\WorkRelationship.xlsx
+2025-10-10 12:46:38,759 - Main - INFO - Running Assignment_type_Code for uploads\Excel_Files\Venkataraman\Test\Worker\Assignment.xlsx
+2025-10-10 12:46:38,759 - Main - INFO - Running validate_termination_date for uploads\Excel_Files\Venkataraman\Test\Worker\Assignment.xlsx
+2025-10-10 12:46:38,782 - Main - INFO - Running validate_LegalEmployer_change for WorkTerms.xlsx
+2025-10-10 12:46:38,783 - Main - INFO - ✅ Legal Employer validation passed.
+2025-10-10 12:46:38,789 - root - INFO - Starting validation for parent: Worker
+2025-10-10 12:46:38,790 - root - WARNING - File not found: uploads\Excel_Files\Worker\Worker.xlsx
+2025-10-10 12:46:38,790 - root - WARNING - File not found: uploads\Excel_Files\Worker\PersonName.xlsx
+2025-10-10 12:46:38,790 - root - WARNING - File not found: uploads\Excel_Files\Worker\WorkRelationship.xlsx
+2025-10-10 12:46:38,791 - root - WARNING - File not found: uploads\Excel_Files\Worker\WorkTerms.xlsx
+2025-10-10 12:46:38,791 - root - WARNING - File not found: uploads\Excel_Files\Worker\Assignment.xlsx
+2025-10-10 12:46:38,792 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\ExternalIdentifier.xlsx
+2025-10-10 12:46:38,792 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonAddress.xlsx
+2025-10-10 12:46:38,792 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonCitizenship.xlsx
+2025-10-10 12:46:38,792 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonDeliveryMethod.xlsx
+2025-10-10 12:46:38,792 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonDriversLicence.xlsx
+2025-10-10 12:46:38,792 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonEmail.xlsx
+2025-10-10 12:46:38,792 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonEthnicity.xlsx
+2025-10-10 12:46:38,793 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonImage.xlsx
+2025-10-10 12:46:38,793 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonLegislativeData.xlsx
+2025-10-10 12:46:38,793 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonNationalIdentifier.xlsx
+2025-10-10 12:46:38,793 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonPassport.xlsx
+2025-10-10 12:46:38,793 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonPhone.xlsx
+2025-10-10 12:46:38,793 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonReligion.xlsx
+2025-10-10 12:46:38,794 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonUserInformation.xlsx
+2025-10-10 12:46:38,794 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonUserManualRoles.xlsx
+2025-10-10 12:46:38,794 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonVisa.xlsx
+2025-10-10 12:46:38,794 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\SeniorityDate.xlsx
+2025-10-10 12:46:38,794 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentEligibleJob.xlsx
+2025-10-10 12:46:38,794 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentExtraInfo.xlsx
+2025-10-10 12:46:38,795 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentGradeSteps.xlsx
+2025-10-10 12:46:38,795 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentSupervisor.xlsx
+2025-10-10 12:46:38,795 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentWorkMeasure.xlsx
+2025-10-10 12:46:38,795 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\SeniorityHour.xlsx
+2025-10-10 12:46:38,796 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkingHourPattern.xlsx
+2025-10-10 12:46:38,796 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\Contract.xlsx
+2025-10-10 12:46:38,796 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkTermsExtraInfo.xlsx
+2025-10-10 12:46:38,797 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkTermsGradeSteps.xlsx
+2025-10-10 12:46:38,797 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkTermsSupervisor.xlsx
+2025-10-10 12:46:38,797 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkTermsWorkMeasure.xlsx
+2025-10-10 12:46:38,797 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkerExtraInfo.xlsx
+2025-10-10 12:46:41,788 - Main - INFO - Received Excel POST request with Venkataraman/Test/Worker/Worker.xlsx
+2025-10-10 12:46:41,801 - Main - INFO - Received Excel POST request with Venkataraman/Test/Worker/Worker.xlsx
+2025-10-10 12:46:41,848 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:41,849 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-10-10 12:46:41,849 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:142]
+2025-10-10 12:46:41,849 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:41,850 - python_multipart.multipart - DEBUG - Calling on_header_field with data[144:156]
+2025-10-10 12:46:41,850 - python_multipart.multipart - DEBUG - Calling on_header_value with data[158:168]
+2025-10-10 12:46:41,850 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:41,851 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:41,851 - python_multipart.multipart - DEBUG - Calling on_part_data with data[172:387]
+2025-10-10 12:46:41,851 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:41,851 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-10-10 12:46:41,865 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:41,866 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-10-10 12:46:41,866 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:142]
+2025-10-10 12:46:41,866 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:41,866 - python_multipart.multipart - DEBUG - Calling on_header_field with data[144:156]
+2025-10-10 12:46:41,866 - python_multipart.multipart - DEBUG - Calling on_header_value with data[158:168]
+2025-10-10 12:46:41,867 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:41,867 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:41,867 - python_multipart.multipart - DEBUG - Calling on_part_data with data[172:387]
+2025-10-10 12:46:41,867 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:41,868 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-10-10 12:46:41,870 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:46:41,870 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-10-10 12:46:41,870 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:142]
+2025-10-10 12:46:41,871 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:41,871 - python_multipart.multipart - DEBUG - Calling on_header_field with data[144:156]
+2025-10-10 12:46:41,871 - python_multipart.multipart - DEBUG - Calling on_header_value with data[158:168]
+2025-10-10 12:46:41,871 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:46:41,871 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:46:41,872 - python_multipart.multipart - DEBUG - Calling on_part_data with data[172:387]
+2025-10-10 12:46:41,872 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:46:41,872 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-10-10 12:46:41,915 - Main - ERROR - Venkataraman_Test_LookupData.xlsx not found. Please ensure it's in the 'Required_files' directory.
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\Documents\GitHub\Project_Charlie_Main\server\Main.py", line 750, in robust_lookup
+    lookup_df = pd.read_excel(Path(__file__).parent/ "Required_files"/f"{customerName}_{instanceName}_LookupData.xlsx")
+  File "C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages\pandas\io\excel\_base.py", line 495, in read_excel
+    io = ExcelFile(
+        io,
+    ...<2 lines>...
+        engine_kwargs=engine_kwargs,
+    )
+  File "C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages\pandas\io\excel\_base.py", line 1550, in __init__
+    ext = inspect_excel_format(
+        content_or_path=path_or_buffer, storage_options=storage_options
+    )
+  File "C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages\pandas\io\excel\_base.py", line 1402, in inspect_excel_format
+    with get_handle(
+         ~~~~~~~~~~^
+        content_or_path, "rb", storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as handle:
+    ^
+  File "C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\ADMIN\\Documents\\GitHub\\Project_Charlie_Main\\server\\Required_files\\Venkataraman_Test_LookupData.xlsx'
+2025-10-10 12:46:41,951 - Main - ERROR - Venkataraman_Test_LookupData.xlsx not found. Please ensure it's in the 'Required_files' directory.
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\Documents\GitHub\Project_Charlie_Main\server\Main.py", line 750, in robust_lookup
+    lookup_df = pd.read_excel(Path(__file__).parent/ "Required_files"/f"{customerName}_{instanceName}_LookupData.xlsx")
+  File "C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages\pandas\io\excel\_base.py", line 495, in read_excel
+    io = ExcelFile(
+        io,
+    ...<2 lines>...
+        engine_kwargs=engine_kwargs,
+    )
+  File "C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages\pandas\io\excel\_base.py", line 1550, in __init__
+    ext = inspect_excel_format(
+        content_or_path=path_or_buffer, storage_options=storage_options
+    )
+  File "C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages\pandas\io\excel\_base.py", line 1402, in inspect_excel_format
+    with get_handle(
+         ~~~~~~~~~~^
+        content_or_path, "rb", storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as handle:
+    ^
+  File "C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\ADMIN\\Documents\\GitHub\\Project_Charlie_Main\\server\\Required_files\\Venkataraman_Test_LookupData.xlsx'
+2025-10-10 12:46:42,069 - Main - ERROR - Venkataraman_Test_LookupData.xlsx not found. Please ensure it's in the 'Required_files' directory.
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\Documents\GitHub\Project_Charlie_Main\server\Main.py", line 750, in robust_lookup
+    lookup_df = pd.read_excel(Path(__file__).parent/ "Required_files"/f"{customerName}_{instanceName}_LookupData.xlsx")
+  File "C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages\pandas\io\excel\_base.py", line 495, in read_excel
+    io = ExcelFile(
+        io,
+    ...<2 lines>...
+        engine_kwargs=engine_kwargs,
+    )
+  File "C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages\pandas\io\excel\_base.py", line 1550, in __init__
+    ext = inspect_excel_format(
+        content_or_path=path_or_buffer, storage_options=storage_options
+    )
+  File "C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages\pandas\io\excel\_base.py", line 1402, in inspect_excel_format
+    with get_handle(
+         ~~~~~~~~~~^
+        content_or_path, "rb", storage_options=storage_options, is_text=False
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as handle:
+    ^
+  File "C:\Users\ADMIN\AppData\Roaming\Python\Python313\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\ADMIN\\Documents\\GitHub\\Project_Charlie_Main\\server\\Required_files\\Venkataraman_Test_LookupData.xlsx'
+2025-10-10 12:46:48,863 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/soap+xml; charset=utf-8'), (b'Referrer-Policy', b'origin'), (b'X-Content-Type-Options', b'nosniff'), (b'Cache-Control', b'no-store'), (b'Pragma', b'no-cache'), (b'X-ORACLE-DMS-ECID', b'006GCYlrg7C2zGT6yBAhMG00BbWm0007uK'), (b'X-ORACLE-DMS-RID', b'0:3'), (b'Content-Security-Policy', b"default-src 'self' ; script-src 'self' 'unsafe-inline' 'unsafe-eval' ; style-src 'self' 'unsafe-inline' ; style-src-elem 'self'  'unsafe-inline'; img-src 'self'  data:; frame-src 'self'  data:; media-src 'none'; frame-ancestors 'self'"), (b'Content-Encoding', b'gzip'), (b'X-XSS-Protection', b'1; mode=block'), (b'Content-Language', b'en'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains'), (b'Date', b'Fri, 10 Oct 2025 07:16:49 GMT'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Vary', b'Accept-Encoding'), (b'Connection', b'Transfer-Encoding'), (b'Set-Cookie', b'JSESSIONID=; expires=Thu, 01-Jan-1970 01:00:00 GMT; path=/xmlpserver; HttpOnly;SameSite=None;Secure'), (b'Set-Cookie', b'_WL_AUTHCOOKIE_JSESSIONID=; expires=Thu, 01-Jan-1970 01:00:00 GMT; path=/xmlpserver; secure; HttpOnly;SameSite=None;Secure'), (b'AKGRN', b'0.d7d70b17.1760080581.f0fd7cd8')])
+2025-10-10 12:46:48,864 - httpx - INFO - HTTP Request: POST https://ejir-test.fa.us6.oraclecloud.com/xmlpserver/services/ExternalReportWSSService?wsdl "HTTP/1.1 200 OK"
+2025-10-10 12:46:48,865 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-10-10 12:46:48,966 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-10-10 12:46:48,967 - httpcore.http11 - DEBUG - response_closed.started
+2025-10-10 12:46:48,967 - httpcore.http11 - DEBUG - response_closed.complete
+2025-10-10 12:46:48,967 - Main - INFO - SOAP request successful with status code 200
+2025-10-10 12:46:48,968 - Main - WARNING - Response content: <env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope"><env:Header/><env:Body><ns2:runReportResponse xmlns:ns2="http://xmlns.oracle.com/oxp/service/PublicReportService"><ns2:runReportReturn><ns2:reportBytes>UEsDBBQACAgIABg6SlsAAAAAAAAAAAAAAAAYAAAAeGwvd29ya3NoZWV0cy9zaGVldDEueG1slL1f0yPZfaR37wh/BwbvLTbq1ClUKSRtWKd3YEf4wuG/11xytGIsyZE53JX97d0kWy12PU82cq44LDynXvyyC0DiAMj8u//w//7utz/7b9//4cff/PD7v//5428+/Pxn3//+Vz/8+je//89///P/8//47n84f/6zH//4y9//+pe//eH33//9z/+/73/8+X/4h//+v/u7f/3hD//lx3...
+2025-10-10 12:46:48,970 - Main - INFO - SOAP request saved at: Venkataraman\Test\soap_temp_storage\soap_response_saved.xml
+2025-10-10 12:46:48,990 - httpcore.connection - DEBUG - close.started
+2025-10-10 12:46:48,991 - httpcore.connection - DEBUG - close.complete
+2025-10-10 12:47:12,352 - Main - WARNING - oracle credentials are, https://ejir-test.fa.us6.oraclecloud.com, vikas.sharma@smarterp.com, Vik@s#2024
+2025-10-10 12:47:12,353 - Main - INFO - SOAP request saved at: Venkataraman\Test\soap_temp_storage\soap_request_Lookup_Data_saved.xml
+2025-10-10 12:47:12,557 - Main - INFO - Making SOAP request to https://ejir-test.fa.us6.oraclecloud.com/xmlpserver/services/ExternalReportWSSService?wsdl with user vikas.sharma@smarterp.com
+2025-10-10 12:47:12,557 - httpcore.connection - DEBUG - connect_tcp.started host='ejir-test.fa.us6.oraclecloud.com' port=443 local_address=None timeout=90 socket_options=None
+2025-10-10 12:47:12,833 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x0000022DA2ABF100>
+2025-10-10 12:47:12,833 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000022DA2B26A80> server_hostname='ejir-test.fa.us6.oraclecloud.com' timeout=90
+2025-10-10 12:47:12,841 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x0000022DA12D3AD0>
+2025-10-10 12:47:12,841 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-10-10 12:47:12,841 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-10-10 12:47:12,842 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-10-10 12:47:12,842 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-10-10 12:47:12,843 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-10-10 12:47:13,260 - Main - WARNING - oracle credentials are, https://ejir-test.fa.us6.oraclecloud.com, vikas.sharma@smarterp.com, Vik@s#2024
+2025-10-10 12:47:13,261 - Main - INFO - SOAP request saved at: Venkataraman\Test\soap_temp_storage\soap_request_Mandatory_Fields_saved.xml
+2025-10-10 12:47:13,477 - Main - INFO - Making SOAP request to https://ejir-test.fa.us6.oraclecloud.com/xmlpserver/services/ExternalReportWSSService?wsdl with user vikas.sharma@smarterp.com
+2025-10-10 12:47:13,477 - httpcore.connection - DEBUG - connect_tcp.started host='ejir-test.fa.us6.oraclecloud.com' port=443 local_address=None timeout=90 socket_options=None
+2025-10-10 12:47:13,501 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x0000022DA2B16E00>
+2025-10-10 12:47:13,502 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000022DA2DFF920> server_hostname='ejir-test.fa.us6.oraclecloud.com' timeout=90
+2025-10-10 12:47:13,510 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x0000022DA2B16F10>
+2025-10-10 12:47:13,511 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-10-10 12:47:13,511 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-10-10 12:47:13,511 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-10-10 12:47:13,512 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-10-10 12:47:13,512 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-10-10 12:47:14,674 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/soap+xml; charset=utf-8'), (b'Referrer-Policy', b'origin'), (b'X-Content-Type-Options', b'nosniff'), (b'Cache-Control', b'no-store'), (b'Pragma', b'no-cache'), (b'X-ORACLE-DMS-ECID', b'006GCYozP362zGT6yBAhMG00BbWm0007w9'), (b'X-ORACLE-DMS-RID', b'0:3'), (b'Content-Security-Policy', b"default-src 'self' ; script-src 'self' 'unsafe-inline' 'unsafe-eval' ; style-src 'self' 'unsafe-inline' ; style-src-elem 'self'  'unsafe-inline'; img-src 'self'  data:; frame-src 'self'  data:; media-src 'none'; frame-ancestors 'self'"), (b'Content-Encoding', b'gzip'), (b'X-XSS-Protection', b'1; mode=block'), (b'Content-Language', b'en'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains'), (b'Date', b'Fri, 10 Oct 2025 07:17:15 GMT'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Vary', b'Accept-Encoding'), (b'Connection', b'Transfer-Encoding'), (b'Set-Cookie', b'JSESSIONID=; expires=Thu, 01-Jan-1970 01:00:00 GMT; path=/xmlpserver; HttpOnly;SameSite=None;Secure'), (b'Set-Cookie', b'_WL_AUTHCOOKIE_JSESSIONID=; expires=Thu, 01-Jan-1970 01:00:00 GMT; path=/xmlpserver; secure; HttpOnly;SameSite=None;Secure'), (b'AKGRN', b'0.d7d70b17.1760080634.f106324a')])
+2025-10-10 12:47:14,674 - httpx - INFO - HTTP Request: POST https://ejir-test.fa.us6.oraclecloud.com/xmlpserver/services/ExternalReportWSSService?wsdl "HTTP/1.1 200 OK"
+2025-10-10 12:47:14,674 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-10-10 12:47:14,917 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-10-10 12:47:14,917 - httpcore.http11 - DEBUG - response_closed.started
+2025-10-10 12:47:14,918 - httpcore.http11 - DEBUG - response_closed.complete
+2025-10-10 12:47:14,918 - Main - INFO - SOAP request successful with status code 200
+2025-10-10 12:47:14,919 - Main - WARNING - Response content: <env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope"><env:Header/><env:Body><ns2:runReportResponse xmlns:ns2="http://xmlns.oracle.com/oxp/service/PublicReportService"><ns2:runReportReturn><ns2:reportBytes>UEsDBBQACAgIABg6SlsAAAAAAAAAAAAAAAAYAAAAeGwvd29ya3NoZWV0cy9zaGVldDEueG1slL1f0yPZfaR37wh/BwbvLTbq1ClUKSRtWKd3YEf4wuG/11xytGIsyZE53JX97d0kWy12PU82cq44LDynXvyyC0DiAMj8u//w//7utz/7b9//4cff/PD7v//5428+/Pxn3//+Vz/8+je//89///P/8//47n84f/6zH//4y9//+pe//eH33//9z/+/73/8+X/4h//+v/u7f/3hD//lx3...
+2025-10-10 12:47:14,921 - Main - INFO - SOAP request saved at: Venkataraman\Test\soap_temp_storage\soap_response_saved.xml
+2025-10-10 12:47:14,959 - httpcore.connection - DEBUG - close.started
+2025-10-10 12:47:14,960 - httpcore.connection - DEBUG - close.complete
+2025-10-10 12:47:50,862 - httpcore.http11 - DEBUG - receive_response_headers.failed exception=ReadTimeout(TimeoutError())
+2025-10-10 12:47:50,863 - httpcore.http11 - DEBUG - response_closed.started
+2025-10-10 12:47:50,863 - httpcore.http11 - DEBUG - response_closed.complete
+2025-10-10 12:47:50,863 - Main - ERROR - SOAP call failed: 
+2025-10-10 12:48:02,728 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/soap+xml; charset=utf-8'), (b'Referrer-Policy', b'origin'), (b'X-Content-Type-Options', b'nosniff'), (b'Cache-Control', b'no-store'), (b'Pragma', b'no-cache'), (b'X-ORACLE-DMS-ECID', b'006GCYowyhR2zGT6yBAhMG00BbWm0007w8'), (b'X-ORACLE-DMS-RID', b'0:3'), (b'Content-Security-Policy', b"default-src 'self' ; script-src 'self' 'unsafe-inline' 'unsafe-eval' ; style-src 'self' 'unsafe-inline' ; style-src-elem 'self'  'unsafe-inline'; img-src 'self'  data:; frame-src 'self'  data:; media-src 'none'; frame-ancestors 'self'"), (b'Content-Encoding', b'gzip'), (b'X-XSS-Protection', b'1; mode=block'), (b'Content-Language', b'en'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains'), (b'Date', b'Fri, 10 Oct 2025 07:18:03 GMT'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Vary', b'Accept-Encoding'), (b'Connection', b'Transfer-Encoding'), (b'Set-Cookie', b'JSESSIONID=; expires=Thu, 01-Jan-1970 01:00:00 GMT; path=/xmlpserver; HttpOnly;SameSite=None;Secure'), (b'Set-Cookie', b'_WL_AUTHCOOKIE_JSESSIONID=; expires=Thu, 01-Jan-1970 01:00:00 GMT; path=/xmlpserver; secure; HttpOnly;SameSite=None;Secure'), (b'AKGRN', b'0.85d70b17.1760080633.272b2e25')])
+2025-10-10 12:48:02,729 - httpx - INFO - HTTP Request: POST https://ejir-test.fa.us6.oraclecloud.com/xmlpserver/services/ExternalReportWSSService?wsdl "HTTP/1.1 200 OK"
+2025-10-10 12:48:02,730 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-10-10 12:48:02,979 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-10-10 12:48:02,980 - httpcore.http11 - DEBUG - response_closed.started
+2025-10-10 12:48:02,980 - httpcore.http11 - DEBUG - response_closed.complete
+2025-10-10 12:48:02,980 - Main - INFO - SOAP request successful with status code 200
+2025-10-10 12:48:02,981 - Main - WARNING - Response content: <env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope"><env:Header/><env:Body><ns2:runReportResponse xmlns:ns2="http://xmlns.oracle.com/oxp/service/PublicReportService"><ns2:runReportReturn><ns2:reportBytes>UEsDBBQACAgIAEE6SlsAAAAAAAAAAAAAAAAYAAAAeGwvd29ya3NoZWV0cy9zaGVldDEueG1slL1bcyvXgSb7PhHzHxR6H4so1AXosD1xxqCwSdbDiXN91tjbbcXo4pHU7Tn//myJoltcmR/x8andZK4F7JUiCpVYVfj9f/1f337z2b9//OHHr7//7g+fH3539/lnH7/78/d/+fq7f/3D5//3//Xlfzl9/tmPP3313V+++ub77z7+4fP/7+OPn//XP/7n//T7f3z/w//48W8fP/702a...
+2025-10-10 12:48:02,983 - Main - INFO - SOAP request saved at: Venkataraman\Test\soap_temp_storage\soap_response_saved.xml
+2025-10-10 12:48:03,006 - httpcore.connection - DEBUG - close.started
+2025-10-10 12:48:03,007 - httpcore.connection - DEBUG - close.complete
+2025-10-10 12:48:03,984 - Main - INFO - Received Excel POST request with Venkataraman/Test/Worker/Worker.xlsx
+2025-10-10 12:48:03,992 - Main - INFO - Received Excel POST request with Venkataraman/Test/Worker/Worker.xlsx
+2025-10-10 12:48:04,059 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:04,059 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-10-10 12:48:04,059 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:142]
+2025-10-10 12:48:04,059 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:04,060 - python_multipart.multipart - DEBUG - Calling on_header_field with data[144:156]
+2025-10-10 12:48:04,060 - python_multipart.multipart - DEBUG - Calling on_header_value with data[158:168]
+2025-10-10 12:48:04,060 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:04,060 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:04,060 - python_multipart.multipart - DEBUG - Calling on_part_data with data[172:387]
+2025-10-10 12:48:04,060 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:04,061 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-10-10 12:48:04,090 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:04,091 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-10-10 12:48:04,091 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:142]
+2025-10-10 12:48:04,091 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:04,091 - python_multipart.multipart - DEBUG - Calling on_header_field with data[144:156]
+2025-10-10 12:48:04,091 - python_multipart.multipart - DEBUG - Calling on_header_value with data[158:168]
+2025-10-10 12:48:04,092 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:04,092 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:04,092 - python_multipart.multipart - DEBUG - Calling on_part_data with data[172:387]
+2025-10-10 12:48:04,092 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:04,092 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-10-10 12:48:04,095 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:04,095 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-10-10 12:48:04,095 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:142]
+2025-10-10 12:48:04,096 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:04,096 - python_multipart.multipart - DEBUG - Calling on_header_field with data[144:156]
+2025-10-10 12:48:04,096 - python_multipart.multipart - DEBUG - Calling on_header_value with data[158:168]
+2025-10-10 12:48:04,096 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:04,097 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:04,097 - python_multipart.multipart - DEBUG - Calling on_part_data with data[172:387]
+2025-10-10 12:48:04,097 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:04,097 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-10-10 12:48:08,870 - Main - INFO - Lookup fetching started with global_bo='Worker', bo='Worker', attributes=['PersonNumber', 'EffectiveStartDate', 'EffectiveEndDate', 'BloodType', 'CorrespondenceLanguage', 'StartDate', 'DateOfBirth', 'CountryOfBirth', 'RegionOfBirth', 'TownOfBirth', 'ActionCode', 'ReasonCode'], transaction=False
+2025-10-10 12:48:09,166 - Main - DEBUG - Final filtered DF before processing: 
+                   LOV_Type BO_NAME COMP_NAME  ... Effective_Date Country DFF_Name
+12509  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12510  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12511  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12512  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12513  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12514  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12515  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12516  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+
+[8 rows x 12 columns]
+2025-10-10 12:48:09,244 - Main - INFO - Lookup fetching completed successfully.
+2025-10-10 12:48:09,411 - Main - INFO - Lookup fetching started with global_bo='Worker', bo='Worker', attributes=['PersonNumber', 'EffectiveStartDate', 'EffectiveEndDate', 'BloodType', 'CorrespondenceLanguage', 'StartDate', 'DateOfBirth', 'CountryOfBirth', 'RegionOfBirth', 'TownOfBirth', 'ActionCode', 'ReasonCode'], transaction=False
+2025-10-10 12:48:09,641 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:09,679 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-10-10 12:48:09,720 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:92]
+2025-10-10 12:48:09,730 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:09,738 - Main - DEBUG - Final filtered DF before processing: 
+                   LOV_Type BO_NAME COMP_NAME  ... Effective_Date Country DFF_Name
+12509  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12510  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12511  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12512  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12513  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12514  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12515  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+12516  Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+
+[8 rows x 12 columns]
+2025-10-10 12:48:09,765 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:09,810 - python_multipart.multipart - DEBUG - Calling on_part_data with data[96:102]
+2025-10-10 12:48:09,812 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:09,821 - Main - INFO - Lookup fetching completed successfully.
+2025-10-10 12:48:09,827 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:09,876 - python_multipart.multipart - DEBUG - Calling on_header_field with data[146:165]
+2025-10-10 12:48:09,901 - python_multipart.multipart - DEBUG - Calling on_header_value with data[167:262]
+2025-10-10 12:48:09,907 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:09,926 - python_multipart.multipart - DEBUG - Calling on_header_field with data[264:276]
+2025-10-10 12:48:09,978 - python_multipart.multipart - DEBUG - Calling on_header_value with data[278:343]
+2025-10-10 12:48:10,041 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:10,071 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:10,079 - python_multipart.multipart - DEBUG - Calling on_part_data with data[347:38069]
+2025-10-10 12:48:10,085 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:10,096 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:10,101 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38113:38132]
+2025-10-10 12:48:10,129 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38134:38169]
+2025-10-10 12:48:10,132 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:10,135 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:10,140 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38173:38177]
+2025-10-10 12:48:10,149 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:10,155 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:10,166 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38221:38240]
+2025-10-10 12:48:10,192 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38242:38272]
+2025-10-10 12:48:10,201 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:10,206 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:10,218 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38276:38288]
+2025-10-10 12:48:10,223 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:10,226 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:10,227 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38332:38351]
+2025-10-10 12:48:10,236 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38353:38383]
+2025-10-10 12:48:10,242 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:10,254 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:10,260 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38387:38391]
+2025-10-10 12:48:10,266 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:10,275 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:10,291 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38435:38454]
+2025-10-10 12:48:10,297 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38456:38485]
+2025-10-10 12:48:10,304 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:10,310 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:10,316 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38489:38491]
+2025-10-10 12:48:10,322 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:10,326 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:10,335 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38535:38554]
+2025-10-10 12:48:10,341 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38556:38586]
+2025-10-10 12:48:10,347 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:10,353 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:10,375 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38590:38592]
+2025-10-10 12:48:10,397 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:10,418 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:10,431 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38636:38655]
+2025-10-10 12:48:10,444 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38657:38686]
+2025-10-10 12:48:10,448 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:10,451 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:10,457 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38690:38692]
+2025-10-10 12:48:10,463 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:10,475 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:10,477 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38736:38755]
+2025-10-10 12:48:10,488 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38757:38798]
+2025-10-10 12:48:10,491 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:10,497 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:10,503 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38802:38804]
+2025-10-10 12:48:10,507 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:10,514 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:10,518 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38848:38867]
+2025-10-10 12:48:10,532 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38869:38908]
+2025-10-10 12:48:10,539 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:10,551 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:10,582 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38912:38979]
+2025-10-10 12:48:10,589 - Main - INFO - Lookup fetching started with global_bo='Worker', bo='Worker', attributes=['PersonNumber', 'EffectiveStartDate', 'EffectiveEndDate', 'BloodType', 'CorrespondenceLanguage', 'StartDate', 'DateOfBirth', 'CountryOfBirth', 'RegionOfBirth', 'TownOfBirth', 'ActionCode', 'ReasonCode'], transaction=True
+2025-10-10 12:48:10,590 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:10,622 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 12:48:10,630 - python_multipart.multipart - DEBUG - Calling on_header_field with data[39023:39042]
+2025-10-10 12:48:10,641 - python_multipart.multipart - DEBUG - Calling on_header_value with data[39044:39087]
+2025-10-10 12:48:10,646 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 12:48:10,659 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 12:48:10,676 - python_multipart.multipart - DEBUG - Calling on_part_data with data[39091:39687]
+2025-10-10 12:48:10,702 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 12:48:10,712 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-10-10 12:48:10,726 - Main - INFO - Created directory structure: uploads\Excel_Files\Venkataraman\Test\Worker
+2025-10-10 12:48:10,731 - Main - INFO - ✅ Parsed Actions: Term=[], Hire=[], GT=[]
+2025-10-10 12:48:10,746 - Main - DEBUG - Transaction DF before concat for attributes ['personnumber', 'effectivestartdate', 'effectiveenddate', 'bloodtype', 'correspondencelanguage', 'startdate', 'dateofbirth', 'countryofbirth', 'regionofbirth', 'townofbirth', 'actioncode', 'reasoncode']: 
+                    LOV_Type BO_NAME COMP_NAME  ... Effective_Date Country DFF_Name
+12540         Manage Actions                    ...     2025/04/21     NaN      NaN
+12541         Manage Actions                    ...     2020/01/29     NaN      NaN
+12542         Manage Actions                    ...     1900/01/01     NaN      NaN
+12543         Manage Actions                    ...     1900/01/01     NaN      NaN
+12544         Manage Actions                    ...     1900/01/01     NaN      NaN
+...                      ...     ...       ...  ...            ...     ...      ...
+19187  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+19188  Manage Action Reasons                    ...     1951/01/01     NaN      NaN
+19189  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+19190  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+19191  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+
+[329 rows x 12 columns]
+2025-10-10 12:48:10,812 - Main - DEBUG - Final filtered DF before processing: 
+                  LOV_Type BO_NAME COMP_NAME  ... Effective_Date Country DFF_Name
+0     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+1     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+2     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+3     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+4     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+..                     ...     ...       ...  ...            ...     ...      ...
+332  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+333  Manage Action Reasons                    ...     1951/01/01     NaN      NaN
+334  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+335  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+336  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+
+[337 rows x 12 columns]
+2025-10-10 12:48:10,847 - Main - INFO - Lookup fetching completed successfully.
+2025-10-10 12:48:11,429 - Main - INFO - [✅] Saved sheet 'Worker' to 'Worker.xlsx'
+2025-10-10 12:48:11,800 - Main - INFO - [✅] Saved sheet 'PersonName' to 'PersonName.xlsx'
+2025-10-10 12:48:11,911 - Main - INFO - [✅] Saved sheet 'WorkRelationship' to 'WorkRelationship.xlsx'
+2025-10-10 12:48:11,954 - Main - INFO - [✅] Saved sheet 'WorkTerms' to 'WorkTerms.xlsx'
+2025-10-10 12:48:11,990 - Main - INFO - [✅] Saved sheet 'Assignment' to 'Assignment.xlsx'
+2025-10-10 12:48:11,997 - Main - INFO - [✅] Saved sheet 'Contract' to 'Contract.xlsx'
+2025-10-10 12:48:12,004 - Main - INFO - [✅] Saved sheet 'PersonNationalIdentifier' to 'PersonNationalIdentifier.xlsx'
+2025-10-10 12:48:12,014 - Main - INFO - [✅] Saved sheet 'PersonReligion' to 'PersonReligion.xlsx'
+2025-10-10 12:48:12,024 - Main - INFO - [✅] Saved sheet 'PersonAddress' to 'PersonAddress.xlsx'
+2025-10-10 12:48:12,032 - Main - INFO - [✅] Saved sheet 'PersonCitizenship' to 'PersonCitizenship.xlsx'
+2025-10-10 12:48:12,040 - Main - INFO - [✅] Saved sheet 'PersonEmail' to 'PersonEmail.xlsx'
+2025-10-10 12:48:12,048 - Main - INFO - [✅] Saved sheet 'PersonEthnicity' to 'PersonEthnicity.xlsx'
+2025-10-10 12:48:12,049 - Main - INFO - Running populate_actual_termination_date_from_resignation for uploads\Excel_Files\Venkataraman\Test\Worker\WorkRelationship.xlsx
+2025-10-10 12:48:12,049 - Main - INFO - Running validate_workrelationship_sheet for uploads\Excel_Files\Venkataraman\Test\Worker\WorkRelationship.xlsx
+2025-10-10 12:48:12,049 - Main - INFO - Running Assignment_type_Code for uploads\Excel_Files\Venkataraman\Test\Worker\Assignment.xlsx
+2025-10-10 12:48:12,049 - Main - INFO - Running validate_termination_date for uploads\Excel_Files\Venkataraman\Test\Worker\Assignment.xlsx
+2025-10-10 12:48:12,070 - Main - INFO - Running validate_LegalEmployer_change for WorkTerms.xlsx
+2025-10-10 12:48:12,070 - Main - INFO - ✅ Legal Employer validation passed.
+2025-10-10 12:48:12,082 - root - INFO - Starting validation for parent: Worker
+2025-10-10 12:48:12,083 - root - WARNING - File not found: uploads\Excel_Files\Worker\Worker.xlsx
+2025-10-10 12:48:12,083 - root - WARNING - File not found: uploads\Excel_Files\Worker\PersonName.xlsx
+2025-10-10 12:48:12,084 - root - WARNING - File not found: uploads\Excel_Files\Worker\WorkRelationship.xlsx
+2025-10-10 12:48:12,084 - root - WARNING - File not found: uploads\Excel_Files\Worker\WorkTerms.xlsx
+2025-10-10 12:48:12,084 - root - WARNING - File not found: uploads\Excel_Files\Worker\Assignment.xlsx
+2025-10-10 12:48:12,084 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\ExternalIdentifier.xlsx
+2025-10-10 12:48:12,084 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonAddress.xlsx
+2025-10-10 12:48:12,085 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonCitizenship.xlsx
+2025-10-10 12:48:12,085 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonDeliveryMethod.xlsx
+2025-10-10 12:48:12,085 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonDriversLicence.xlsx
+2025-10-10 12:48:12,085 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonEmail.xlsx
+2025-10-10 12:48:12,085 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonEthnicity.xlsx
+2025-10-10 12:48:12,085 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonImage.xlsx
+2025-10-10 12:48:12,086 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonLegislativeData.xlsx
+2025-10-10 12:48:12,086 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonNationalIdentifier.xlsx
+2025-10-10 12:48:12,086 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonPassport.xlsx
+2025-10-10 12:48:12,086 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonPhone.xlsx
+2025-10-10 12:48:12,086 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonReligion.xlsx
+2025-10-10 12:48:12,087 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonUserInformation.xlsx
+2025-10-10 12:48:12,087 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonUserManualRoles.xlsx
+2025-10-10 12:48:12,087 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonVisa.xlsx
+2025-10-10 12:48:12,087 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\SeniorityDate.xlsx
+2025-10-10 12:48:12,087 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentEligibleJob.xlsx
+2025-10-10 12:48:12,088 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentExtraInfo.xlsx
+2025-10-10 12:48:12,088 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentGradeSteps.xlsx
+2025-10-10 12:48:12,088 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentSupervisor.xlsx
+2025-10-10 12:48:12,088 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentWorkMeasure.xlsx
+2025-10-10 12:48:12,088 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\SeniorityHour.xlsx
+2025-10-10 12:48:12,089 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkingHourPattern.xlsx
+2025-10-10 12:48:12,089 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\Contract.xlsx
+2025-10-10 12:48:12,089 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkTermsExtraInfo.xlsx
+2025-10-10 12:48:12,089 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkTermsGradeSteps.xlsx
+2025-10-10 12:48:12,089 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkTermsSupervisor.xlsx
+2025-10-10 12:48:12,090 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkTermsWorkMeasure.xlsx
+2025-10-10 12:48:12,090 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkerExtraInfo.xlsx
+2025-10-10 13:04:53,818 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:04:53,819 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-10-10 13:04:53,819 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:142]
+2025-10-10 13:04:53,819 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:04:53,820 - python_multipart.multipart - DEBUG - Calling on_header_field with data[144:156]
+2025-10-10 13:04:53,820 - python_multipart.multipart - DEBUG - Calling on_header_value with data[158:168]
+2025-10-10 13:04:53,820 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:04:53,820 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:04:53,820 - python_multipart.multipart - DEBUG - Calling on_part_data with data[172:387]
+2025-10-10 13:04:53,821 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:04:53,821 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-10-10 13:04:53,824 - Main - INFO - Received Excel POST request with Venkataraman/Test/Worker/Worker.xlsx
+2025-10-10 13:04:55,821 - Main - INFO - Lookup fetching started with global_bo='Worker', bo='Worker', attributes=['PersonNumber', 'EffectiveStartDate', 'EffectiveEndDate', 'BloodType', 'CorrespondenceLanguage', 'StartDate', 'DateOfBirth', 'CountryOfBirth', 'RegionOfBirth', 'TownOfBirth', 'ActionCode', 'ReasonCode'], transaction=True
+2025-10-10 13:04:55,857 - Main - DEBUG - Transaction DF before concat for attributes ['personnumber', 'effectivestartdate', 'effectiveenddate', 'bloodtype', 'correspondencelanguage', 'startdate', 'dateofbirth', 'countryofbirth', 'regionofbirth', 'townofbirth', 'actioncode', 'reasoncode']: 
+                    LOV_Type BO_NAME COMP_NAME  ... Effective_Date Country DFF_Name
+12540         Manage Actions                    ...     2025/04/21     NaN      NaN
+12541         Manage Actions                    ...     2020/01/29     NaN      NaN
+12542         Manage Actions                    ...     1900/01/01     NaN      NaN
+12543         Manage Actions                    ...     1900/01/01     NaN      NaN
+12544         Manage Actions                    ...     1900/01/01     NaN      NaN
+...                      ...     ...       ...  ...            ...     ...      ...
+19187  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+19188  Manage Action Reasons                    ...     1951/01/01     NaN      NaN
+19189  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+19190  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+19191  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+
+[329 rows x 12 columns]
+2025-10-10 13:04:55,889 - Main - DEBUG - Final filtered DF before processing: 
+                  LOV_Type BO_NAME COMP_NAME  ... Effective_Date Country DFF_Name
+0     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+1     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+2     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+3     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+4     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+..                     ...     ...       ...  ...            ...     ...      ...
+332  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+333  Manage Action Reasons                    ...     1951/01/01     NaN      NaN
+334  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+335  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+336  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+
+[337 rows x 12 columns]
+2025-10-10 13:04:55,914 - Main - INFO - Lookup fetching completed successfully.
+2025-10-10 13:12:21,181 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:12:21,183 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-10-10 13:12:21,184 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:144]
+2025-10-10 13:12:21,187 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:12:21,189 - python_multipart.multipart - DEBUG - Calling on_header_field with data[146:158]
+2025-10-10 13:12:21,189 - python_multipart.multipart - DEBUG - Calling on_header_value with data[160:225]
+2025-10-10 13:12:21,192 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:12:21,195 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:12:21,200 - python_multipart.multipart - DEBUG - Calling on_part_data with data[229:5431]
+2025-10-10 13:12:21,200 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:12:21,202 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-10-10 13:12:21,301 - root - INFO - Successfully read customer Excel file. Shape: (4, 12)
+2025-10-10 13:12:21,306 - root - INFO - No valid value mappings found for column 'PersonNumber' in the transformation rules.
+2025-10-10 13:12:21,312 - root - INFO - No valid value mappings found for column 'EffectiveStartDate' in the transformation rules.
+2025-10-10 13:12:21,314 - root - DEBUG - No specific transformation rules found for column: 'EffectiveEndDate'. Skipping.
+2025-10-10 13:12:21,315 - root - DEBUG - No specific transformation rules found for column: 'StartDate'. Skipping.
+2025-10-10 13:12:21,321 - root - INFO - No valid value mappings found for column 'ActionCode' in the transformation rules.
+2025-10-10 13:12:21,330 - root - INFO - No valid value mappings found for column 'ReasonCode' in the transformation rules.
+2025-10-10 13:12:21,334 - root - DEBUG - No specific transformation rules found for column: 'DateOfBirth'. Skipping.
+2025-10-10 13:12:21,336 - root - DEBUG - No specific transformation rules found for column: 'CountryOfBirth'. Skipping.
+2025-10-10 13:12:21,337 - root - DEBUG - No specific transformation rules found for column: 'RegionOfBirth'. Skipping.
+2025-10-10 13:12:21,340 - root - DEBUG - No specific transformation rules found for column: 'TownOfBirth'. Skipping.
+2025-10-10 13:12:21,344 - root - DEBUG - No specific transformation rules found for column: 'CorrespondenceLanguage'. Skipping.
+2025-10-10 13:12:21,347 - root - DEBUG - No specific transformation rules found for column: 'BloodType'. Skipping.
+2025-10-10 13:12:21,423 - root - INFO - Successfully created transformed Excel file in memory. Size: 5337 bytes.
+2025-10-10 13:12:21,424 - root - INFO - Sending transformed Excel file: transformed_Worker.xlsx
+2025-10-10 13:21:48,721 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:21:48,722 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-10-10 13:21:48,722 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:142]
+2025-10-10 13:21:48,723 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:48,724 - python_multipart.multipart - DEBUG - Calling on_header_field with data[144:156]
+2025-10-10 13:21:48,725 - python_multipart.multipart - DEBUG - Calling on_header_value with data[158:168]
+2025-10-10 13:21:48,725 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:48,726 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:21:48,727 - python_multipart.multipart - DEBUG - Calling on_part_data with data[172:387]
+2025-10-10 13:21:48,728 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:21:48,729 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-10-10 13:21:48,740 - Main - INFO - Received Excel POST request with Venkataraman/Test/Worker/Worker.xlsx
+2025-10-10 13:21:53,893 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:21:53,913 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-10-10 13:21:53,945 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:92]
+2025-10-10 13:21:53,960 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:53,962 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:21:53,973 - python_multipart.multipart - DEBUG - Calling on_part_data with data[96:102]
+2025-10-10 13:21:53,978 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:21:53,999 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:21:54,005 - python_multipart.multipart - DEBUG - Calling on_header_field with data[146:165]
+2025-10-10 13:21:54,019 - python_multipart.multipart - DEBUG - Calling on_header_value with data[167:262]
+2025-10-10 13:21:54,033 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:54,052 - python_multipart.multipart - DEBUG - Calling on_header_field with data[264:276]
+2025-10-10 13:21:54,068 - python_multipart.multipart - DEBUG - Calling on_header_value with data[278:343]
+2025-10-10 13:21:54,075 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:54,082 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:21:54,091 - python_multipart.multipart - DEBUG - Calling on_part_data with data[347:38069]
+2025-10-10 13:21:54,101 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:21:54,116 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:21:54,130 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38113:38132]
+2025-10-10 13:21:54,146 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38134:38169]
+2025-10-10 13:21:54,170 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:54,174 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:21:54,183 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38173:38177]
+2025-10-10 13:21:54,199 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:21:54,219 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:21:54,221 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38221:38240]
+2025-10-10 13:21:54,237 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38242:38272]
+2025-10-10 13:21:54,253 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:54,279 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:21:54,289 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38276:38288]
+2025-10-10 13:21:54,298 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:21:54,351 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:21:54,358 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38332:38351]
+2025-10-10 13:21:54,419 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38353:38383]
+2025-10-10 13:21:54,429 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:54,451 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:21:54,471 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38387:38391]
+2025-10-10 13:21:54,475 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:21:54,494 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:21:54,509 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38435:38454]
+2025-10-10 13:21:54,536 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38456:38485]
+2025-10-10 13:21:54,545 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:54,564 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:21:54,589 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38489:38491]
+2025-10-10 13:21:54,597 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:21:54,601 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:21:54,610 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38535:38554]
+2025-10-10 13:21:54,622 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38556:38586]
+2025-10-10 13:21:54,632 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:54,649 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:21:54,666 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38590:38592]
+2025-10-10 13:21:54,683 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:21:54,699 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:21:54,716 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38636:38655]
+2025-10-10 13:21:54,720 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38657:38686]
+2025-10-10 13:21:54,738 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:54,743 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:21:54,750 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38690:38692]
+2025-10-10 13:21:54,761 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:21:54,766 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:21:54,778 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38736:38755]
+2025-10-10 13:21:54,796 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38757:38798]
+2025-10-10 13:21:54,809 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:54,816 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:21:54,825 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38802:38804]
+2025-10-10 13:21:54,830 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:21:54,844 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:21:54,858 - python_multipart.multipart - DEBUG - Calling on_header_field with data[38848:38867]
+2025-10-10 13:21:54,875 - python_multipart.multipart - DEBUG - Calling on_header_value with data[38869:38908]
+2025-10-10 13:21:54,889 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:54,904 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:21:54,923 - python_multipart.multipart - DEBUG - Calling on_part_data with data[38912:38979]
+2025-10-10 13:21:54,943 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:21:54,959 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:21:55,003 - python_multipart.multipart - DEBUG - Calling on_header_field with data[39023:39042]
+2025-10-10 13:21:55,009 - python_multipart.multipart - DEBUG - Calling on_header_value with data[39044:39087]
+2025-10-10 13:21:55,023 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:21:55,045 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:21:55,052 - python_multipart.multipart - DEBUG - Calling on_part_data with data[39091:39687]
+2025-10-10 13:21:55,079 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:21:55,082 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-10-10 13:21:55,128 - Main - INFO - Created directory structure: uploads\Excel_Files\Venkataraman\Test\Worker
+2025-10-10 13:21:55,130 - Main - INFO - ✅ Parsed Actions: Term=[], Hire=[], GT=[]
+2025-10-10 13:21:55,819 - Main - INFO - [✅] Saved sheet 'Worker' to 'Worker.xlsx'
+2025-10-10 13:21:56,254 - Main - INFO - [✅] Saved sheet 'PersonName' to 'PersonName.xlsx'
+2025-10-10 13:21:56,933 - Main - INFO - [✅] Saved sheet 'WorkRelationship' to 'WorkRelationship.xlsx'
+2025-10-10 13:21:57,351 - Main - INFO - Lookup fetching started with global_bo='Worker', bo='Worker', attributes=['PersonNumber', 'EffectiveStartDate', 'EffectiveEndDate', 'BloodType', 'CorrespondenceLanguage', 'StartDate', 'DateOfBirth', 'CountryOfBirth', 'RegionOfBirth', 'TownOfBirth', 'ActionCode', 'ReasonCode'], transaction=True
+2025-10-10 13:21:57,510 - Main - INFO - [✅] Saved sheet 'WorkTerms' to 'WorkTerms.xlsx'
+2025-10-10 13:21:57,698 - Main - DEBUG - Transaction DF before concat for attributes ['personnumber', 'effectivestartdate', 'effectiveenddate', 'bloodtype', 'correspondencelanguage', 'startdate', 'dateofbirth', 'countryofbirth', 'regionofbirth', 'townofbirth', 'actioncode', 'reasoncode']: 
+                    LOV_Type BO_NAME COMP_NAME  ... Effective_Date Country DFF_Name
+12540         Manage Actions                    ...     2025/04/21     NaN      NaN
+12541         Manage Actions                    ...     2020/01/29     NaN      NaN
+12542         Manage Actions                    ...     1900/01/01     NaN      NaN
+12543         Manage Actions                    ...     1900/01/01     NaN      NaN
+12544         Manage Actions                    ...     1900/01/01     NaN      NaN
+...                      ...     ...       ...  ...            ...     ...      ...
+19187  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+19188  Manage Action Reasons                    ...     1951/01/01     NaN      NaN
+19189  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+19190  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+19191  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+
+[329 rows x 12 columns]
+2025-10-10 13:21:57,799 - Main - DEBUG - Final filtered DF before processing: 
+                  LOV_Type BO_NAME COMP_NAME  ... Effective_Date Country DFF_Name
+0     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+1     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+2     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+3     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+4     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+..                     ...     ...       ...  ...            ...     ...      ...
+332  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+333  Manage Action Reasons                    ...     1951/01/01     NaN      NaN
+334  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+335  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+336  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+
+[337 rows x 12 columns]
+2025-10-10 13:21:57,906 - Main - INFO - Lookup fetching completed successfully.
+2025-10-10 13:21:57,960 - Main - INFO - [✅] Saved sheet 'Assignment' to 'Assignment.xlsx'
+2025-10-10 13:21:58,176 - Main - INFO - [✅] Saved sheet 'Contract' to 'Contract.xlsx'
+2025-10-10 13:21:58,296 - Main - INFO - [✅] Saved sheet 'PersonNationalIdentifier' to 'PersonNationalIdentifier.xlsx'
+2025-10-10 13:21:58,432 - Main - INFO - [✅] Saved sheet 'PersonReligion' to 'PersonReligion.xlsx'
+2025-10-10 13:21:58,601 - Main - INFO - [✅] Saved sheet 'PersonAddress' to 'PersonAddress.xlsx'
+2025-10-10 13:21:58,696 - Main - INFO - [✅] Saved sheet 'PersonCitizenship' to 'PersonCitizenship.xlsx'
+2025-10-10 13:21:58,722 - Main - INFO - [✅] Saved sheet 'PersonEmail' to 'PersonEmail.xlsx'
+2025-10-10 13:21:58,745 - Main - INFO - [✅] Saved sheet 'PersonEthnicity' to 'PersonEthnicity.xlsx'
+2025-10-10 13:21:58,746 - Main - INFO - Running populate_actual_termination_date_from_resignation for uploads\Excel_Files\Venkataraman\Test\Worker\WorkRelationship.xlsx
+2025-10-10 13:21:58,747 - Main - INFO - Running validate_workrelationship_sheet for uploads\Excel_Files\Venkataraman\Test\Worker\WorkRelationship.xlsx
+2025-10-10 13:21:58,747 - Main - INFO - Running Assignment_type_Code for uploads\Excel_Files\Venkataraman\Test\Worker\Assignment.xlsx
+2025-10-10 13:21:58,748 - Main - INFO - Running validate_termination_date for uploads\Excel_Files\Venkataraman\Test\Worker\Assignment.xlsx
+2025-10-10 13:21:58,784 - Main - INFO - Running validate_LegalEmployer_change for WorkTerms.xlsx
+2025-10-10 13:21:58,787 - Main - INFO - ✅ Legal Employer validation passed.
+2025-10-10 13:21:58,808 - root - INFO - Starting validation for parent: Worker
+2025-10-10 13:21:58,809 - root - WARNING - File not found: uploads\Excel_Files\Worker\Worker.xlsx
+2025-10-10 13:21:58,810 - root - WARNING - File not found: uploads\Excel_Files\Worker\PersonName.xlsx
+2025-10-10 13:21:58,811 - root - WARNING - File not found: uploads\Excel_Files\Worker\WorkRelationship.xlsx
+2025-10-10 13:21:58,812 - root - WARNING - File not found: uploads\Excel_Files\Worker\WorkTerms.xlsx
+2025-10-10 13:21:58,812 - root - WARNING - File not found: uploads\Excel_Files\Worker\Assignment.xlsx
+2025-10-10 13:21:58,813 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\ExternalIdentifier.xlsx
+2025-10-10 13:21:58,814 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonAddress.xlsx
+2025-10-10 13:21:58,815 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonCitizenship.xlsx
+2025-10-10 13:21:58,815 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonDeliveryMethod.xlsx
+2025-10-10 13:21:58,816 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonDriversLicence.xlsx
+2025-10-10 13:21:58,817 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonEmail.xlsx
+2025-10-10 13:21:58,818 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonEthnicity.xlsx
+2025-10-10 13:21:58,819 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonImage.xlsx
+2025-10-10 13:21:58,820 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonLegislativeData.xlsx
+2025-10-10 13:21:58,822 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonNationalIdentifier.xlsx
+2025-10-10 13:21:58,822 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonPassport.xlsx
+2025-10-10 13:21:58,823 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonPhone.xlsx
+2025-10-10 13:21:58,824 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonReligion.xlsx
+2025-10-10 13:21:58,825 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonUserInformation.xlsx
+2025-10-10 13:21:58,826 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonUserManualRoles.xlsx
+2025-10-10 13:21:58,828 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\PersonVisa.xlsx
+2025-10-10 13:21:58,828 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\SeniorityDate.xlsx
+2025-10-10 13:21:58,829 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentEligibleJob.xlsx
+2025-10-10 13:21:58,830 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentExtraInfo.xlsx
+2025-10-10 13:21:58,831 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentGradeSteps.xlsx
+2025-10-10 13:21:58,832 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentSupervisor.xlsx
+2025-10-10 13:21:58,832 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\AssignmentWorkMeasure.xlsx
+2025-10-10 13:21:58,833 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\SeniorityHour.xlsx
+2025-10-10 13:21:58,834 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkingHourPattern.xlsx
+2025-10-10 13:21:58,836 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\Contract.xlsx
+2025-10-10 13:21:58,838 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkTermsExtraInfo.xlsx
+2025-10-10 13:21:58,841 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkTermsGradeSteps.xlsx
+2025-10-10 13:21:58,843 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkTermsSupervisor.xlsx
+2025-10-10 13:21:58,844 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkTermsWorkMeasure.xlsx
+2025-10-10 13:21:58,845 - root - INFO - Skipping non-mandatory file not found: uploads\Excel_Files\Worker\WorkerExtraInfo.xlsx
+2025-10-10 13:28:48,228 - Main - INFO - Received Excel POST request with Venkataraman/Test/Worker/Worker.xlsx
+2025-10-10 13:28:48,262 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2025-10-10 13:28:48,262 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2025-10-10 13:28:48,263 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:142]
+2025-10-10 13:28:48,263 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:28:48,263 - python_multipart.multipart - DEBUG - Calling on_header_field with data[144:156]
+2025-10-10 13:28:48,263 - python_multipart.multipart - DEBUG - Calling on_header_value with data[158:168]
+2025-10-10 13:28:48,263 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2025-10-10 13:28:48,263 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2025-10-10 13:28:48,263 - python_multipart.multipart - DEBUG - Calling on_part_data with data[172:387]
+2025-10-10 13:28:48,263 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2025-10-10 13:28:48,264 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2025-10-10 13:28:49,766 - Main - INFO - Lookup fetching started with global_bo='Worker', bo='Worker', attributes=['PersonNumber', 'EffectiveStartDate', 'EffectiveEndDate', 'BloodType', 'CorrespondenceLanguage', 'StartDate', 'DateOfBirth', 'CountryOfBirth', 'RegionOfBirth', 'TownOfBirth', 'ActionCode', 'ReasonCode'], transaction=True
+2025-10-10 13:28:49,819 - Main - DEBUG - Transaction DF before concat for attributes ['personnumber', 'effectivestartdate', 'effectiveenddate', 'bloodtype', 'correspondencelanguage', 'startdate', 'dateofbirth', 'countryofbirth', 'regionofbirth', 'townofbirth', 'actioncode', 'reasoncode']: 
+                    LOV_Type BO_NAME COMP_NAME  ... Effective_Date Country DFF_Name
+12540         Manage Actions                    ...     2025/04/21     NaN      NaN
+12541         Manage Actions                    ...     2020/01/29     NaN      NaN
+12542         Manage Actions                    ...     1900/01/01     NaN      NaN
+12543         Manage Actions                    ...     1900/01/01     NaN      NaN
+12544         Manage Actions                    ...     1900/01/01     NaN      NaN
+...                      ...     ...       ...  ...            ...     ...      ...
+19187  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+19188  Manage Action Reasons                    ...     1951/01/01     NaN      NaN
+19189  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+19190  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+19191  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+
+[329 rows x 12 columns]
+2025-10-10 13:28:49,829 - Main - DEBUG - Final filtered DF before processing: 
+                  LOV_Type BO_NAME COMP_NAME  ... Effective_Date Country DFF_Name
+0     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+1     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+2     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+3     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+4     Manage Common Lookup  worker    worker  ...     0001/01/01     NaN      NaN
+..                     ...     ...       ...  ...            ...     ...      ...
+332  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+333  Manage Action Reasons                    ...     1951/01/01     NaN      NaN
+334  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+335  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+336  Manage Action Reasons                    ...     1900/01/01     NaN      NaN
+
+[337 rows x 12 columns]
+2025-10-10 13:28:49,843 - Main - INFO - Lookup fetching completed successfully.
