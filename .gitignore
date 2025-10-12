@@ -3,3 +3,6 @@
 /frontend/client
 /Server/BUNDLE_DEPOT_ZONE
 /Server/User
+/Server/uploads/Excel_Files
+/Server/Required_Files/*LookupData.xlsx
+/Server/Required_Files/*MandatoryFields.xlsx
