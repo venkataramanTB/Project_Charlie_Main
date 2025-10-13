@@ -3,7 +3,7 @@ import json
 import csv
 import io
 from flask import Flask, request, jsonify, render_template
-import ollama
+import google.generativeai as genai
 import pandas as pd
 import traceback
 import re
@@ -46,21 +46,23 @@ app.logger.addHandler(console_handler)
 app.logger.setLevel(logging.DEBUG) # Ensure Flask's internal logger is also DEBUG
 
 
-# Configure Ollama client
-OLLAMA_HOST = os.environ.get('OLLAMA_HOST', 'http://localhost:11434')
-OLLAMA_MODEL = os.environ.get('OLLAMA_MODEL', 'mistral')
+# Configure Gemini client
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'AIzaSyCCFXd3bAAVonA9FAf2kvRlcnt6wKFkaHw')
+GEMINI_MODEL = os.environ.get('GEMINI_MODEL', 'gemini-2.5-flash')
 
-client = None
-try:
-    client = ollama.Client(host=OLLAMA_HOST)
-    client.list() # Test connectivity
-    logger.info(f"Ollama client initialized successfully for host: {OLLAMA_HOST} with model: {OLLAMA_MODEL}")
-except ollama.ResponseError as e:
-    logger.error(f"Failed to connect to Ollama server at {OLLAMA_HOST}. Is Ollama running? Error: {e}")
-    client = None
-except Exception as e:
-    logger.critical(f"Unexpected error during Ollama client initialization: {e}", exc_info=True)
-    client = None
+model = None
+if not GEMINI_API_KEY:
+    logger.critical("GEMINI_API_KEY is not set. The application will not be able to generate validation code.")
+else:
+    try:
+        genai.configure(api_key=GEMINI_API_KEY)
+        model = genai.GenerativeModel(GEMINI_MODEL)
+        # A simple test to check if the model is accessible.
+        model.generate_content("test", generation_config=genai.types.GenerationConfig(max_output_tokens=1))
+        logger.info(f"Gemini client initialized successfully with model: {GEMINI_MODEL}")
+    except Exception as e:
+        logger.critical(f"Failed to initialize Gemini client. Please check your API key and model name. Error: {e}", exc_info=True)
+        model = None
 
 MAX_RETRIES = 10 # Maximum attempts for code generation and execution
 
@@ -121,8 +123,8 @@ def generate_validation_code(validation_rules, existing_code_with_error=None): #
     If `existing_code_with_error` is provided (from a previous failed attempt),
     it attempts to rectify the code by including the error details in the prompt.
     """
-    if not client:
-        logger.error("Ollama client is not initialized. Cannot generate validation code.")
+    if not model:
+        logger.error("Gemini model is not initialized. Cannot generate validation code.")
         return None
 
     active_rules = {col: rule for col, rule in validation_rules.items() if rule}
@@ -186,25 +188,29 @@ def generate_validation_code(validation_rules, existing_code_with_error=None): #
     logger.debug(f"--- FULL LLM PROMPT START ---\n{full_prompt}\n--- FULL LLM PROMPT END ---")
 
     try:
-        response = client.generate(model=OLLAMA_MODEL, prompt=full_prompt, stream=False)
-        generated_text = response['response'].strip()
-        logger.debug(f"Raw LLM response received (length: {len(generated_text)} characters).")
+        # Gemini may have stricter safety settings. Disabling them for this specific task.
+        safety_settings = {
+            "HARM_CATEGORY_HARASSMENT": "BLOCK_NONE",
+            "HARM_CATEGORY_HATE_SPEECH": "BLOCK_NONE",
+            "HARM_CATEGORY_SEXUALLY_EXPLICIT": "BLOCK_NONE",
+            "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_NONE",
+        }
+        response = model.generate_content(full_prompt, safety_settings=safety_settings)
+        generated_text = response.text.strip()
+        logger.debug(f"Raw Gemini response received (length: {len(generated_text)} characters).")
 
         match = re.search(r"```python\s*(.*?)\s*```", generated_text, re.DOTALL)
         if match:
             extracted_code = match.group(1).strip()
-            logger.info("Successfully extracted Python code block from LLM response.")
+            logger.info("Successfully extracted Python code block from Gemini response.")
             logger.debug(f"--- EXTRACTED CODE START ---\n{extracted_code}\n--- EXTRACTED CODE END ---")
             return extracted_code
         else:
-            logger.warning(f"Could not find a Python code block in LLM response. Returning raw text for debugging.")
-            logger.debug(f"--- RAW LLM RESPONSE (NO CODE BLOCK) START ---\n{generated_text}\n--- RAW LLM RESPONSE (NO CODE BLOCK) END ---")
+            logger.warning(f"Could not find a Python code block in Gemini response. Returning raw text for debugging.")
+            logger.debug(f"--- RAW GEMINI RESPONSE (NO CODE BLOCK) START ---\n{generated_text}\n--- RAW GEMINI RESPONSE (NO CODE BLOCK) END ---")
             return generated_text
-    except ollama.ResponseError as e:
-        logger.error(f"Ollama API returned an error: {e}. Check model availability and Ollama server status. You might need to 'ollama pull {OLLAMA_MODEL}'.", exc_info=True)
-        return None
     except Exception as e:
-        logger.error(f"Error calling Ollama API during code generation: {e}", exc_info=True)
+        logger.error(f"Error calling Gemini API during code generation: {e}", exc_info=True)
         return None
 
 def execute_validation_code(code_string, df):
@@ -507,5 +513,5 @@ def correct_code_column_names(code_string, csv_headers):
     return code_string
 
 if __name__ == '__main__':
-    logger.info("Starting Flask application. Ensure Ollama server is running on http://localhost:11434.")
+    logger.info("Starting Flask application with Gemini API.")
     app.run(debug=False, port=9000)

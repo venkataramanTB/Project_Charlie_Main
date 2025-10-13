@@ -6,3 +6,6 @@
 /Server/uploads/Excel_Files
 /Server/Required_Files/*LookupData.xlsx
 /Server/Required_Files/*MandatoryFields.xlsx
+/Server/validation_results
+Server/hdl_jobs.json
+Server/hdl_jobs.json
