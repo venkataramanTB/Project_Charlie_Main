@@ -156,6 +156,8 @@ def generate_validation_code(validation_rules, existing_code_with_error=None): #
         "- Use `row.get('ColumnName', '')` to access values safely (avoid KeyErrors).",
         "- If multiple validation failures occur, append all reasons to a list and join them into one string.",
         "- Return `(True, None)` if no failures are found.",
+        "- Handle missing or null values gracefully.",
+        "- Strictly change the datetime format to '%Y-%m-%d' from '%Y-%m-%d %H:%M:%S'",
         "- Do not add example usage, print statements, or global code — only the function definition.",
         "",
         "",
