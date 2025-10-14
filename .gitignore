@@ -9,5 +9,4 @@
 /Server/validation_results
 Server/hdl_jobs.json
 Server/hdl_jobs.json
-Server/.env
-Server/.env
+Server/*.env
