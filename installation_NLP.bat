@@ -10,6 +10,9 @@ echo ======================================================
 set MODEL_NAME=mistral
 set OLLAMA_INSTALL_URL=https://ollama.ai/download/OllamaSetup.exe
 set OLLAMA_EXE=%LocalAppData%\Programs\Ollama\ollama.exe
+set LOGFILE=setup_log.txt
+
+echo Starting setup at %date% %time% > %LOGFILE%
 
 REM --- Move into NLP directory ---
 pushd NLP || (
@@ -25,15 +28,28 @@ FOR /F "tokens=5" %%P IN ('netstat -aon ^| findstr :9000 ^| findstr LISTENING') 
     taskkill /F /PID %%P >nul 2>&1
 )
 
+:: Step 0.5: Check Python installation
+echo.
+echo [0.5] Checking Python installation...
+where python >nul 2>&1
+if errorlevel 1 (
+    echo ❌ Python not found! Please install Python 3.10+ and add it to PATH.
+    pause
+    popd
+    exit /b
+)
+echo ✅ Python detected.
+
 :: Step 1: Check and create venv if missing
 echo.
 echo [1] Checking for Python virtual environment...
 if not exist "venv" (
     echo ⚙️  Virtual environment not found. Creating one...
-    python -m venv venv
+    python -m venv venv >> %LOGFILE% 2>&1
     if errorlevel 1 (
         echo ❌ Failed to create virtual environment. Check your Python installation.
         pause
+        popd
         exit /b
     )
 ) else (
@@ -43,25 +59,32 @@ if not exist "venv" (
 :: Step 2: Activate the virtual environment
 echo.
 echo [2] Activating virtual environment...
-call venv\Scripts\activate
-if errorlevel 1 (
-    echo ❌ Failed to activate virtual environment.
+if exist "venv\Scripts\activate" (
+    call venv\Scripts\activate
+) else (
+    echo ❌ venv activation script not found!
     pause
+    popd
     exit /b
 )
+echo ✅ Virtual environment activated.
 
-
+:: Step 3: Install dependencies
 echo.
-echo [2] Installing Python dependencies...
+echo [3] Installing Python dependencies...
 IF EXIST requirements.txt (
-    call python -m pip install --upgrade pip >nul
-    call python -m pip install -r requirements.txt
+    call python -m pip install --upgrade pip >> %LOGFILE% 2>&1
+    call python -m pip install -r requirements.txt >> %LOGFILE% 2>&1
 ) ELSE (
-    echo ⚠️ requirements.txt not found! Skipping dependencies.
+    echo ⚠️ requirements.txt not found! Installing minimal dependencies...
+    call pip install flask >> %LOGFILE% 2>&1
 )
 
+echo ✅ Dependencies installation complete.
+
+:: Step 4: Check Ollama installation
 echo.
-echo [3] Checking Ollama installation...
+echo [4] Checking Ollama installation...
 where ollama >nul 2>&1
 IF ERRORLEVEL 1 (
     echo ⚠️ Ollama not found! Downloading installer...
@@ -88,8 +111,9 @@ IF ERRORLEVEL 1 (
 )
 echo ✅ Ollama detected.
 
+:: Step 5: Start Ollama if not running
 echo.
-echo [4] Checking if Ollama is running...
+echo [5] Checking if Ollama is running...
 FOR /F "tokens=5" %%P IN ('netstat -aon ^| findstr :11434 ^| findstr LISTENING') DO (
     echo ⚙️ Ollama already running (PID %%P)
     set "OLLAMA_RUNNING=1"
@@ -99,8 +123,9 @@ IF NOT DEFINED OLLAMA_RUNNING (
     start "Ollama Server" /min cmd /c "ollama serve"
 )
 
+:: Step 6: Wait for Ollama to respond
 echo.
-echo [5] Waiting for Ollama to respond...
+echo [6] Waiting for Ollama to respond...
 set "ATTEMPTS=0"
 :wait_ollama
 set /a ATTEMPTS+=1
@@ -117,8 +142,9 @@ if %ERRORLEVEL% NEQ 0 (
 )
 echo ✅ Ollama service is ready.
 
+:: Step 7: Check model availability
 echo.
-echo [6] Checking if model '%MODEL_NAME%' is available...
+echo [7] Checking if model '%MODEL_NAME%' is available...
 ollama list | find /I "%MODEL_NAME%" >nul
 IF ERRORLEVEL 1 (
     echo 📦 Pulling model '%MODEL_NAME%'...
@@ -127,8 +153,9 @@ IF ERRORLEVEL 1 (
     echo ✅ Model '%MODEL_NAME%' already available.
 )
 
+:: Step 8: Start Flask app
 echo.
-echo [7] Checking for app.py...
+echo [8] Checking for app.py...
 IF NOT EXIST app.py (
     echo ❌ app.py not found!
     pause
@@ -137,7 +164,7 @@ IF NOT EXIST app.py (
 )
 
 echo.
-echo [8] Starting Flask server on port 9000...
+echo [9] Starting Flask server on port 9000...
 start "Charlie Tool NLP" cmd /k "set FLASK_APP=app.py && set FLASK_ENV=development && python -m flask run --host=127.0.0.1 --port=9000"
 
 echo.
@@ -146,6 +173,7 @@ echo 🌐 Flask:   http://127.0.0.1:9000
 echo 🤖 Ollama:  http://127.0.0.1:11434
 echo ======================================================
 echo 💚 Charlie Tool NLP initialized successfully!
+echo 📜 Log file: %CD%\%LOGFILE%
 echo ======================================================
 
 popd
