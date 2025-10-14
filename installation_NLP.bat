@@ -25,16 +25,31 @@ FOR /F "tokens=5" %%P IN ('netstat -aon ^| findstr :9000 ^| findstr LISTENING') 
     taskkill /F /PID %%P >nul 2>&1
 )
 
+:: Step 1: Check and create venv if missing
 echo.
-echo [1] Activating shared virtual environment...
-IF EXIST ..\Server\venv\Scripts\activate.bat (
-    call ..\Server\venv\Scripts\activate.bat
-) ELSE (
-    echo ❌ venv not found in Server\venv!
+echo [1] Checking for Python virtual environment...
+if not exist "venv" (
+    echo ⚙️  Virtual environment not found. Creating one...
+    python -m venv venv
+    if errorlevel 1 (
+        echo ❌ Failed to create virtual environment. Check your Python installation.
+        pause
+        exit /b
+    )
+) else (
+    echo ✅ Virtual environment found.
+)
+
+:: Step 2: Activate the virtual environment
+echo.
+echo [2] Activating virtual environment...
+call venv\Scripts\activate
+if errorlevel 1 (
+    echo ❌ Failed to activate virtual environment.
     pause
-    popd
     exit /b
 )
+
 
 echo.
 echo [2] Installing Python dependencies...
