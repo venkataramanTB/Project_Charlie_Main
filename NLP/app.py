@@ -152,16 +152,17 @@ def generate_validation_code(validation_rules, existing_code_with_error=None): #
         f"{formatted_rules}",
         "",
         "### Implementation Notes:",
-        "- All necessary imports (like `re`, `datetime`) must be **inside** the function.",
+        "- All necessary imports (like `re`, `datetime`, `pandas`) must be **inside** the function.",
         "- Use `row.get('ColumnName', '')` to access values safely (avoid KeyErrors).",
         "- If multiple validation failures occur, append all reasons to a list and join them into one string.",
         "- Return `(True, None)` if no failures are found.",
+        "- Handle missing or null values gracefully.",
+        "- **Datetime Handling:** For any datetime columns listed in the validation rules, convert any string or timestamp to a Python `datetime` object, then normalize it to the format `'%Y-%m-%d'`. Treat unparsable or missing dates as invalid and include them in failure reasons.",
         "- Do not add example usage, print statements, or global code — only the function definition.",
-        "",
         "",
         "### Critical Rule:",
         "- Only generate logic for columns explicitly mentioned in the 'Validation Rules' above.",
-        "- Do not create inferred or generic validations (like date formats, string lengths, or numeric checks) unless they are explicitly listed.",
+        "- Do not create inferred or generic validations (like string lengths or numeric checks) unless they are explicitly listed."
     ]
 
 

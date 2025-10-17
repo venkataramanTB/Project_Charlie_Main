@@ -18,6 +18,8 @@ import {
   Paper,
   Alert
 } from "@mui/material";
+import { alpha } from '@mui/material/styles';
+import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import PreviewIcon from "@mui/icons-material/RemoveRedEye";
 import CloseIcon from "@mui/icons-material/Close";
@@ -27,7 +29,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import * as XLSX from 'xlsx';
-
+import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import { gsap } from 'gsap';
 import RulePaper from './RulePaper.jsx';
 import ErrorDisplay from './ErrorDisplay.jsx'; // Import the new error component
@@ -36,7 +38,7 @@ const initialNLRs = [];
 
 // ChatBotComponent now accepts pythonFileName and onPythonFileNameChange props
 const ChatBotComponent = ({ attribute, allattributes, open, onClose, componentName, pythonFileName, onPythonFileNameChange, customerName, instanceName, excelFile }) => {
-  const [nlrs, setNlrs] = useState(initialNLRs);
+  const [nlr, setNlr] = useState("");
   const [previewOpen, setPreviewOpen] = useState(false);
   const [csvFile, setCsvFile] = useState(excelFile || null); // State for uploaded CSV/Excel file
   const [csvHeaders, setCsvHeaders] = useState([]);
@@ -145,7 +147,7 @@ const ChatBotComponent = ({ attribute, allattributes, open, onClose, componentNa
         onPythonFileNameChange(pythonFileName);
       }
       if (open) { // Reset NLRs and CSV states when dialog opens with a new pythonFileName
-        setNlrs(initialNLRs);
+        setNlr("");
         setCsvFile(null);
         setCsvHeaders([]);
       }
@@ -219,6 +221,17 @@ const ChatBotComponent = ({ attribute, allattributes, open, onClose, componentNa
     }
   }, []);
 
+  useEffect(() => {
+  if (selectedAttribute) {
+    gsap.fromTo(
+      '.primary-attr-chip',
+      { opacity: 0, scale: 0.8, y: -6 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'back.out(1.7)' }
+    );
+  }
+}, [selectedAttribute]);
+
+
   // Set selectedAttribute based on component's attribute prop or first CSV header
   useEffect(() => {
     if (csvHeaders.length > 0) {
@@ -240,16 +253,16 @@ const ChatBotComponent = ({ attribute, allattributes, open, onClose, componentNa
     axios.get(`${apiEndpoint}/api/hdl/nlr/batch`, { params: { attribute } })
       .then(res => {
         if (res.data && res.data.rules) {
-          setNlrs(res.data.rules);
+          setNlr(res.data.rules);
         } else {
-          setNlrs(initialNLRs);
+          setNlr("");
         }
       })
       .catch(err => {
         setSnackbarMsg("Failed to load rules from backend: " + (err?.response?.data?.error || err.message));
         setSnackbarSeverity("error");
         setSnackbarOpen(true);
-        setNlrs(initialNLRs);
+        setNlr("");
       })
       .finally(() => setLoading(false));
   }, [attribute, componentName, customerName, instanceName]);
@@ -264,7 +277,7 @@ const ChatBotComponent = ({ attribute, allattributes, open, onClose, componentNa
       code: pythonCode,
       component_name: componentName || "default_component",
       attribute: selectedAttribute,
-      rules: nlrs,
+      rules: [nlr],
       conditions: [], // or any conditions you want
       customerName: customerName, // example placeholder
       instanceName: instanceName, // example placeholder
@@ -294,38 +307,7 @@ const ChatBotComponent = ({ attribute, allattributes, open, onClose, componentNa
     }
   };
 
-  // Handles changes to an individual NLR text field
-  const handleNlrChange = (idx, value) => {
-    setNlrs((prev) => prev.map((nlr, i) => (i === idx ? value : nlr)));
-  };
-
-  // Adds a new empty NLR field
-  const handleAddNlr = () => {
-    setNlrs((prev) => [...prev, ""]);
-    gsap.to(".add-rule-button", { scale: 0.95, yoyo: true, repeat: 1, duration: 0.1, ease: "power1.inOut" });
-  };
-
   // Removes an NLR field with animation
-  const handleRemoveNlr = (idx) => {
-    const elementToRemove = document.getElementById(`rule-paper-${idx}`);
-    if (elementToRemove) {
-      gsap.to(elementToRemove, {
-        opacity: 0,
-        x: 50,
-        scale: 0.7,
-        rotation: 15,
-        duration: 0.3,
-        ease: "power2.in",
-        onComplete: () => {
-          setNlrs((prev) => prev.filter((_, i) => i !== idx));
-          delete rulePaperAnimations.current[idx]; // Clean up GSAP animation instance
-        }
-      });
-    } else {
-      setNlrs((prev) => prev.filter((_, i) => i !== idx));
-      delete rulePaperAnimations.current[idx];
-    }
-  };
 
   useEffect(() => {
     if (excelFile) {
@@ -428,7 +410,7 @@ const handleExcelChange = (e) => {
         return;
       }
 
-      const rules = nlrs.filter((r) => r.trim());
+      const rules = [nlr.trim()].filter((r) => r);
       if (rules.length === 0) {
         setSnackbarMsg("Please add at least one rule before previewing.");
         setSnackbarSeverity("warning");
@@ -556,34 +538,31 @@ const handleExcelChange = (e) => {
   };
 
   // Inserts an attribute name into the currently focused NLR input field
-  const handleAttributeInsert = (attributeName) => {
-    if (focusedNlrIndex !== null) {
-      const inputElement = rulePaperAnimations.current[focusedNlrIndex]?.inputElement;
+const handleAttributeInsert = (attributeName) => {
+  const inputElement = rulePaperAnimations.current[0]?.inputElement;
 
-      if (inputElement) {
-        const start = inputElement.selectionStart;
-        const end = inputElement.selectionEnd;
-        const currentValue = nlrs[focusedNlrIndex];
+  if (inputElement) {
+    const start = inputElement.selectionStart;
+    const end = inputElement.selectionEnd;
+    const currentValue = nlr;
 
-        const newValue =
-          currentValue.substring(0, start) +
-          `{${attributeName}}` + // Format attribute for insertion
-          currentValue.substring(end);
+    const newValue =
+      currentValue.substring(0, start) +
+      `{${attributeName}}` +
+      currentValue.substring(end);
 
-        setNlrs((prev) =>
-          prev.map((nlr, i) => (i === focusedNlrIndex ? newValue : nlr))
-        );
+    setNlr(newValue);
 
-        // Set cursor position after insertion
-        setTimeout(() => {
-          const newCursorPosition = start + `{${attributeName}}`.length;
-          inputElement.setSelectionRange(newCursorPosition, newCursorPosition);
-          inputElement.focus();
-        }, 0);
-      }
-    }
-    // Popover remains open to allow further insertions or attribute selection
-  };
+    // Set cursor position after insertion
+    setTimeout(() => {
+      const newCursorPosition = start + `{${attributeName}}`.length;
+      inputElement.setSelectionRange(newCursorPosition, newCursorPosition);
+      inputElement.focus();
+    }, 0);
+  }
+  // Popover remains open to allow further insertions or attribute selection
+};
+
 
   // Handles opening the attribute popover
   const handleOpenAttributePopover = (event, idx) => {
@@ -608,13 +587,12 @@ const handleExcelChange = (e) => {
 
   // Focus on the first NLR input when dialog opens and NLRs are present
   useEffect(() => {
-    if (open && nlrs.length > 0) {
-      const firstInputElement = rulePaperAnimations.current[0]?.inputElement;
-      if (firstInputElement) {
-        firstInputElement.focus();
-      }
+    if (open) {
+      const inputElement = rulePaperAnimations.current[0]?.inputElement;
+      if (inputElement) inputElement.focus();
     }
-  }, [open, nlrs]);
+  }, [open]);
+
 
   return (
     <>
@@ -710,57 +688,83 @@ const handleExcelChange = (e) => {
               )}
             </Box>
           </Box>
-          
-          <Box sx={{ display: 'flex', px: 3, pb: 3, pt: 1 }}>
             {/* Left Column: Rules - now takes full width */}
-            <Box sx={{ flex: 1, maxHeight: 280, overflowY: 'auto' }}>
-                <Box display="flex" flexDirection="column" gap={2}>
-                  {nlrs.map((nlr, idx) => (
-                    <React.Fragment key={idx}>
-                      <RulePaper
-                        nlr={nlr}
-                        idx={idx}
-                        onNlrChange={handleNlrChange}
-                        onRemoveNlr={nlrs.length === 1 ? null : handleRemoveNlr}
-                        csvHeaders={csvHeaders} // Still pass headers for potential display within RulePaper if needed
-                        onOpenAttributePopover={handleOpenAttributePopover}
-                        ruleAnimation={ruleAnimation}
-                        rulePaperAnimations={rulePaperAnimations}
-                      />
-                      {idx < nlrs.length - 1 && (
-                        <Box display="flex" alignItems="center" justifyContent="center" sx={{ my: 0.5 }}>
-                          <Typography
-                            variant="body2"
-                            color="primary.main"
-                            sx={{
-                              fontWeight: 700,
-                              animation: `andPulse-${idx} 1.5s infinite alternate`,
-                              [`@keyframes andPulse-${idx}`]: {
-                                '0%': { transform: 'scale(1)' },
-                                '100%': { transform: 'scale(1.05)' },
-                              },
-                            }}
-                          >
-                            AND
-                          </Typography>
-                        </Box>
-                      )}
-                    </React.Fragment>
-                  ))}
-                  <Button
-                    onClick={handleAddNlr}
-                    color="primary"
-                    variant="text"
-                    size="large"
-                    startIcon={<AddCircleOutlineIcon />}
-                    sx={{ alignSelf: 'center', fontWeight: 700, mt: 1, fontSize: 16, letterSpacing: 0.5 }}
-                    className="add-rule-button"
-                  >
-                    Add Rule
-                  </Button>
-                </Box>
-            </Box>
-          </Box>
+<Box sx={{ flex: 1, maxHeight: 280, overflowY: 'auto' }}>
+  <Box
+    sx={{
+      p: 2.5,
+      borderRadius: 4,
+      background: (theme) => (theme.palette.mode === 'dark' ? theme.palette.background.paper : 'linear-gradient(145deg, #ffffff 0%, #f6f8ff 100%)'),
+      border: (theme) => `1px solid ${theme.palette.divider}`,
+      boxShadow: '0 8px 20px rgba(81, 45, 168, 0.08)',
+      display: 'flex',
+      flexDirection: 'row', // CHANGED: from 'column' to 'row'
+      alignItems: 'center', // ADDED: to vertically center the items
+      gap: 2,
+      transition: 'all 0.3s ease',
+      '&:hover': {
+        transform: 'translateY(-2px)',
+        boxShadow: '0 12px 28px rgba(81,45,168,0.15)',
+      },
+    }}
+  >
+    {/* ADDED: Wrapper to allow RulePaper to grow */}
+    <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+      <RulePaper
+        nlr={nlr}
+        idx={0}
+        onNlrChange={(_, value) => setNlr(value)}
+        onRemoveNlr={null}
+        csvHeaders={csvHeaders}
+        onOpenAttributePopover={(e) => handleOpenAttributePopover(e, 0)}
+        ruleAnimation={ruleAnimation}
+        rulePaperAnimations={rulePaperAnimations}
+      />
+    </Box>
+
+    {selectedAttribute ? (
+      <Chip
+        className="primary-attr-chip"
+        icon={<VpnKeyOutlinedIcon sx={{ fontSize: '18px' }} />}
+        label={selectedAttribute}
+        color="primary"
+        variant="outlined"
+        clickable
+        onClick={(e) => handleOpenAttributePopover(e, 0)}
+        sx={{
+          textTransform: 'capitalize',
+          fontWeight: 500,
+          letterSpacing: '0.5px',
+          cursor: 'pointer',
+          py: 2,
+          px: 1,
+          transition: 'background-color 0.25s ease-out',
+          '&:hover': {
+            backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.1),
+          },
+          // REMOVED: alignSelf is not needed in a row layout with alignItems
+          '.MuiChip-icon': {
+            color: 'primary.main',
+          },
+        }}
+      />
+    ) : (
+      <Alert
+        severity="warning"
+        variant="outlined"
+        icon={<WarningAmberOutlinedIcon fontSize="inherit" />}
+        sx={{
+          borderStyle: 'dashed',
+          borderColor: 'warning.light',
+          backgroundColor: (theme) => alpha(theme.palette.warning.light, 0.1),
+          whiteSpace: 'nowrap', // ADDED: Prevents text from wrapping in tight spaces
+        }}
+      >
+        No primary attribute selected.
+      </Alert>
+    )}
+  </Box>
+</Box>
         </DialogContent>
         <Box display="flex" justifyContent="space-between" alignItems="center" gap={2} p={2} bgcolor="#f7fafd">
           <Button
@@ -936,28 +940,6 @@ const handleExcelChange = (e) => {
       >
         {csvHeaders.length > 0 ? (
           <>
-            {/* Section for inserting attributes into the current rule */}
-            <Box>
-              <Typography variant="subtitle2" color="text.secondary" mb={1} sx={{ fontWeight: 600 }}>
-                Insert Attribute into Rule:
-              </Typography>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                {csvHeaders.map((header, index) => (
-                  <Chip
-                    key={`insert-${header}`} // Unique key
-                    label={header}
-                    onClick={() => handleAttributeInsert(header)}
-                    color="primary"
-                    variant="outlined"
-                    ref={el => chipRefs.current[index] = el}
-                    sx={{ cursor: 'pointer', '&:hover': { bgcolor: 'primary.light', transform: 'scale(1.05)' } }}
-                  />
-                ))}
-              </Box>
-            </Box>
-
-            <Divider sx={{ my: 1 }} /> {/* Divider between sections */}
-
             {/* Section for selecting the primary attribute for validation */}
             <Box>
               <Typography variant="subtitle2" color="text.secondary" mb={1} sx={{ fontWeight: 600 }}>
@@ -990,6 +972,29 @@ const handleExcelChange = (e) => {
                 ))}
               </Box>
             </Box>
+            {/* Section for inserting attributes into the current rule */}
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary" mb={1} sx={{ fontWeight: 600 }}>
+                Insert Attribute into Rule:
+              </Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                {csvHeaders.map((header, index) => (
+                  <Chip
+                    key={`insert-${header}`} // Unique key
+                    label={header}
+                    onClick={() => handleAttributeInsert(header)}
+                    color="primary"
+                    variant="outlined"
+                    ref={el => chipRefs.current[index] = el}
+                    sx={{ cursor: 'pointer', '&:hover': { bgcolor: 'primary.light', transform: 'scale(1.05)' } }}
+                  />
+                ))}
+              </Box>
+            </Box>
+
+            <Divider sx={{ my: 1 }} /> {/* Divider between sections */}
+
+            
           </>
         ) : (
           <Typography variant="body2" color="text.secondary">No attributes available. Upload a CSV/Excel file to see attributes.</Typography>

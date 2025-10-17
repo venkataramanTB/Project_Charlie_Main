@@ -6353,3 +6353,64 @@ async def update_data(customer: str, instance: str, job_id: int, job_update: HDL
             return {"message": "Job updated", "job": job_update}
 
     raise HTTPException(status_code=404, detail="Job not found")
+
+
+# ✅ Path to your JSON file
+JSON_FILE_PATH = os.path.join(os.getcwd(), "Required_files", "oracle_value_checks.json")
+
+# ✅ Request model
+class OracleValueRequest(BaseModel):
+    componentName: Optional[str] = None
+
+
+@app.post("/api/oracle/value-check")
+def oracle_value_check(request: OracleValueRequest):
+    try:
+        # ✅ Ensure JSON file exists
+        if not os.path.exists(JSON_FILE_PATH):
+            raise HTTPException(status_code=404, detail="Checklist file not found")
+
+        # ✅ Load JSON data
+        with open(JSON_FILE_PATH, "r", encoding="utf-8") as f:
+            all_data = json.load(f)
+
+        # ✅ Collect all available checkpoints across all components
+        all_available_checks = set()
+        for item in all_data:
+            for check in item.get("availableChecks", []):
+                all_available_checks.add(check)
+        all_available_checks = sorted(list(all_available_checks))
+
+        # ✅ If no component name is provided → return all components + full checklist
+        if not request.componentName:
+            return {
+                "components": [item["componentName"] for item in all_data],
+                "allAvailableChecks": all_available_checks
+            }
+
+        # ✅ Find specific component data
+        component_data = next(
+            (item for item in all_data if item.get("componentName", "").lower() == request.componentName.lower()),
+            None
+        )
+
+        # ✅ If component not found → return empty checklist but still show global checks
+        if not component_data:
+            return {
+                "componentName": request.componentName,
+                "availableChecks": [],
+                "allAvailableChecks": all_available_checks
+            }
+
+        # ✅ Return component-specific + global checks
+        return {
+            "componentName": component_data["componentName"],
+            "availableChecks": component_data.get("availableChecks", []),
+            "allAvailableChecks": all_available_checks
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+        
