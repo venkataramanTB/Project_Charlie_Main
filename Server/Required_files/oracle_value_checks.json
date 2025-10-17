@@ -1,0 +1,29 @@
+[
+  {
+    "componentName": "Worker",
+    "availableChecks": [
+      "Person Number Checking"
+    ]
+  },
+  {
+    "componentName": "Assignment",
+    "availableChecks": [
+      "Person Number Checking",
+      "Validate assignment data"
+    ]
+  },
+  {
+    "componentName": "Position",
+    "availableChecks": [
+      "Person Number Checking",
+      "Validate position data"
+    ]
+  },
+  {
+    "componentName": "Department",
+    "availableChecks": [
+      "Person Number Checking",
+      "Validate department data"
+    ]
+  }
+]
