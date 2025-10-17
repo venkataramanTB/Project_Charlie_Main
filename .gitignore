@@ -10,3 +10,4 @@
 Server/hdl_jobs.json
 Server/hdl_jobs.json
 Server/*.env
+Server/server.log
