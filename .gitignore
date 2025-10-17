@@ -9,3 +9,4 @@
 /Server/validation_results
 Server/hdl_jobs.json
 Server/hdl_jobs.json
+*.log
