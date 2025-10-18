@@ -13,3 +13,4 @@ Server/*.env
 Server/server.log
 /Server/__pycache__
 *.pyc
+Server/__pycache__/Main.cpython-313.pyc
