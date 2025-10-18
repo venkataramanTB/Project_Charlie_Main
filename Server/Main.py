@@ -156,6 +156,7 @@ def build_hierarchy_from_df(df: pd.DataFrame, col_map: dict, combos: list):
                 return col_map_local[k]
         return None
 
+
     def parse_mandatory(raw) -> bool:
         if raw is None:
             return False

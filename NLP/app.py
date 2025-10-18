@@ -158,6 +158,7 @@ def generate_validation_code(validation_rules, existing_code_with_error=None): #
         "- Return `(True, None)` if no failures are found.",
         "- Handle missing or null values gracefully.",
         "- **Datetime Handling:** For any datetime columns listed in the validation rules, convert any string or timestamp to a Python `datetime` object, then normalize it to the format `'%Y-%m-%d'`. Treat unparsable or missing dates as invalid and include them in failure reasons.",
+        "- Strictly change the datetime format to '%Y-%m-%d' from '%Y-%m-%d %H:%M:%S'",
         "- Do not add example usage, print statements, or global code — only the function definition.",
         "",
         "### Critical Rule:",

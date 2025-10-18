@@ -1,1 +1,1 @@
-METADATA|PersonCitizenship|CitizenshipId|PersonId(SourceSystemId)|PersonNumber|DateFrom|DateTo|LegislationCode|CitizenshipStatus|SourceSystemOwner|SourceSystemId
+METADATA|PersonCitizenship|SourceSystemOwner|SourceSystemId|PersonId(SourceSystemId)|PersonNumber|DateFrom|DateTo|LegislationCode|CitizenshipStatus
