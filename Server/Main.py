@@ -7935,21 +7935,121 @@ if genai is None:
 elif not GOOGLE_API_KEY:
     logging.info("GEMINI_API_KEY not set; GenAI features are disabled until configured.")
 
+# ── Local column-matching (sentence-transformers → fuzzy — no external API) ─
+_ST_MODEL = None
+_ST_MODEL_NAME = "all-MiniLM-L6-v2"
+
+def _get_st_model():
+    """Lazy-load sentence-transformers model; returns None if unavailable."""
+    global _ST_MODEL
+    if _ST_MODEL is not None:
+        return _ST_MODEL
+    try:
+        from sentence_transformers import SentenceTransformer
+        _ST_MODEL = SentenceTransformer(_ST_MODEL_NAME)
+        logger.info(f"[SentenceTransformers] Loaded '{_ST_MODEL_NAME}' for offline column matching")
+        return _ST_MODEL
+    except Exception as e:
+        logger.info(f"[SentenceTransformers] Not available ({e}); will use fuzzy matching")
+        return None
+
+
+def _local_column_mapping(legacy_cols: List[str], oracle_cols: List[str]) -> dict:
+    """Map legacy → oracle columns without any external API.
+
+    Pass 1 — exact / case-insensitive / separator-normalised string match.
+    Pass 2 — semantic similarity via sentence-transformers (if installed).
+    Pass 3 — difflib sequence matching + token Jaccard (stdlib, always available).
+
+    Returns a partial mapping dict; unmatchable columns are simply omitted.
+    """
+    import re
+    import difflib
+
+    if not legacy_cols or not oracle_cols:
+        return {}
+
+    def _norm(name: str) -> str:
+        return re.sub(r'[^a-z0-9]+', ' ', name.lower()).strip()
+
+    oracle_lower  = {c.lower(): c for c in oracle_cols}
+    oracle_normed = {_norm(c): c for c in oracle_cols}
+
+    mapping: dict = {}
+    unmatched: List[str] = []
+
+    # Pass 1 — exact / case / separator
+    for l in legacy_cols:
+        if l in {c: c for c in oracle_cols}:
+            mapping[l] = l
+        elif l.lower() in oracle_lower:
+            mapping[l] = oracle_lower[l.lower()]
+        elif _norm(l) in oracle_normed:
+            mapping[l] = oracle_normed[_norm(l)]
+        else:
+            unmatched.append(l)
+
+    if not unmatched:
+        return mapping
+
+    unmatched_oracle = [c for c in oracle_cols if c not in mapping.values()]
+    if not unmatched_oracle:
+        return mapping
+
+    # Pass 2 — sentence-transformers semantic similarity
+    model = _get_st_model()
+    if model is not None:
+        try:
+            import numpy as np
+            ST_THRESHOLD = 0.50
+            leg_emb = model.encode(unmatched, normalize_embeddings=True)
+            ora_emb = model.encode(unmatched_oracle, normalize_embeddings=True)
+            sim = np.array(leg_emb) @ np.array(ora_emb).T
+            still_unmatched: List[str] = []
+            for i, l_col in enumerate(unmatched):
+                best_j = int(np.argmax(sim[i]))
+                if float(sim[i][best_j]) >= ST_THRESHOLD:
+                    mapping[l_col] = unmatched_oracle[best_j]
+                else:
+                    still_unmatched.append(l_col)
+            unmatched = still_unmatched
+        except Exception as e:
+            logger.warning(f"[SentenceTransformers] Encoding error: {e}; falling back to fuzzy")
+
+    if not unmatched:
+        return mapping
+
+    # Pass 3 — fuzzy: difflib sequence ratio + token Jaccard (always available)
+    def _fuzzy(a: str, b: str) -> float:
+        na, nb = _norm(a), _norm(b)
+        ta, tb = set(na.split()), set(nb.split())
+        jaccard = len(ta & tb) / len(ta | tb) if ta | tb else 0.0
+        seq     = difflib.SequenceMatcher(None, na, nb).ratio()
+        return 0.5 * jaccard + 0.5 * seq
+
+    FUZZY_THRESHOLD = 0.35
+    remaining_oracle = [c for c in oracle_cols if c not in mapping.values()]
+    for l_col in unmatched:
+        if not remaining_oracle:
+            break
+        best_o, best_s = max(((o, _fuzzy(l_col, o)) for o in remaining_oracle), key=lambda x: x[1])
+        if best_s >= FUZZY_THRESHOLD:
+            mapping[l_col] = best_o
+
+    return mapping
+
+
 def get_smart_mapping_from_gemini(legacy_cols: List[str], oracle_cols: List[str]):
+    """Returns column mapping + date/timestamp detection via Gemini AI.
+    Falls back to local semantic/fuzzy matching when Gemini is unavailable or fails.
     """
-    Updated to return Mapping + Data Type Detection
-    """
+    # Always compute local mapping first — used as baseline / Gemini fallback
+    local_mapping = _local_column_mapping(legacy_cols, oracle_cols)
     fallback_result = {
-        "mapping": {},
+        "mapping": local_mapping,
         "date_columns": [],
         "timestamp_columns": []
     }
-    
-    # Simple exact match fallback
-    oracle_cols_lower = {col.lower(): col for col in oracle_cols}
-    for l_col in legacy_cols:
-        if l_col.lower() in oracle_cols_lower:
-            fallback_result["mapping"][l_col] = oracle_cols_lower[l_col.lower()]
 
     if not GOOGLE_API_KEY or genai is None:
         return fallback_result
@@ -8008,16 +8108,15 @@ def get_smart_mapping_from_gemini(legacy_cols: List[str], oracle_cols: List[str]
         validated_ai = {}
         for src, tgt in ai_data.get("mapping", {}).items():
             if not tgt:
-                continue  # AI said no match — let fallback decide
+                continue  # AI said no match — let local mapping decide
             if tgt in oracle_set:
                 validated_ai[src] = tgt
             elif tgt.lower() in oracle_lower_map:
                 validated_ai[src] = oracle_lower_map[tgt.lower()]
             # else: hallucinated name — discard
 
-        # Merge: start with fallback exact-matches, then layer validated AI on top.
-        # AI only overrides when it found a real oracle column.
-        final_mapping = {**fallback_result["mapping"], **validated_ai}
+        # Merge: local mapping as baseline, validated Gemini results on top
+        final_mapping = {**local_mapping, **validated_ai}
         return {
             "mapping": final_mapping,
             "date_columns": ai_data.get("date_columns", []),
@@ -8250,22 +8349,29 @@ def _read_columns_only(file_bytes: bytes, filename: str = "") -> list:
     """Extract only the column header row from Excel or CSV bytes.
     Uses openpyxl read_only mode — skips all data rows, ~50-100x faster
     than a full read_excel for large workbooks.
+    Falls back to pandas when openpyxl returns an empty list (e.g. merged
+    headers, metadata rows) or raises any exception.
     """
     ext = os.path.splitext(filename)[1].lower() if filename else ""
     if ext == ".csv":
         import csv
         first_line = io.BytesIO(file_bytes).readline().decode("utf-8-sig", errors="replace")
-        return [c.strip() for c in next(csv.reader([first_line])) if c.strip()]
-    try:
-        import openpyxl
-        wb = openpyxl.load_workbook(io.BytesIO(file_bytes), read_only=True, data_only=True)
-        ws = wb.active
-        cols = [str(cell.value).strip() for cell in next(ws.iter_rows(max_row=1)) if cell.value is not None]
-        wb.close()
-        return cols
-    except Exception:
-        # Fallback: full read, grab columns
-        return list(pd.read_excel(io.BytesIO(file_bytes), nrows=0).columns.astype(str))
+        cols = [c.strip() for c in next(csv.reader([first_line])) if c.strip()]
+        if cols:
+            return cols
+    else:
+        try:
+            import openpyxl
+            wb = openpyxl.load_workbook(io.BytesIO(file_bytes), read_only=True, data_only=True)
+            ws = wb.active
+            cols = [str(cell.value).strip() for cell in next(ws.iter_rows(max_row=1)) if cell.value is not None]
+            wb.close()
+            if cols:
+                return cols
+        except Exception:
+            pass
+    # Pandas fallback: handles merged headers, non-standard layouts, and CSV without extension
+    return list(pd.read_excel(io.BytesIO(file_bytes), nrows=0).columns.astype(str))
 
 
 def _run_mapping_job(job_id: str, legacy_bytes: bytes, oracle_bytes: bytes,
@@ -8280,6 +8386,9 @@ def _run_mapping_job(job_id: str, legacy_bytes: bytes, oracle_bytes: bytes,
         except Exception as e:
             _mapping_job_update(job_id, status="failed", error=f"Failed to read Legacy file: {str(e)}")
             return
+        if not legacy_columns:
+            _mapping_job_update(job_id, status="failed", error="No column headers found in the Legacy (source) file. Check that row 1 contains headers.")
+            return
 
         # ── Stage 2: Read Oracle File (headers only) ──
         _mapping_job_update(job_id, progress=25, stage="Reading target file")
@@ -8287,6 +8396,9 @@ def _run_mapping_job(job_id: str, legacy_bytes: bytes, oracle_bytes: bytes,
             oracle_columns = _read_columns_only(oracle_bytes, oracle_filename)
         except Exception as e:
             _mapping_job_update(job_id, status="failed", error=f"Failed to read Target file: {str(e)}")
+            return
+        if not oracle_columns:
+            _mapping_job_update(job_id, status="failed", error="No column headers found in the Oracle (target) file. Check that row 1 contains headers.")
             return
 
         # ── Stage 3: Gemini AI Mapping ──

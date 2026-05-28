@@ -26,3 +26,7 @@ google-genai
 
 # Optional: low-level Excel helpers
 python-calamine==0.6.1
+
+# Local semantic column matching — Gemini fallback (sentence-transformers)
+# model all-MiniLM-L6-v2 (~80 MB) is downloaded on first use from Hugging Face
+sentence-transformers
