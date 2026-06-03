@@ -8449,6 +8449,7 @@ def _polars_read_file(file_path: str, sheet_name=None):
             sp = max(sheet_id_param - 1, 0)
         pdf = pd.read_excel(file_path, sheet_name=sp, dtype=str, engine="openpyxl")
         df = pl.from_pandas(pdf)
+        del pdf  # free pandas frame immediately; only Polars copy remains
 
     # Only cast non-Utf8 columns (calamine emits Int64/Float64 for numeric cells)
     _non_utf8 = {c: pl.Utf8 for c in df.columns if df.schema[c] != pl.Utf8}
@@ -9725,7 +9726,19 @@ async def post_validation_large_scale(
         "temp_dir": temp_dir,
     }
 
-    # Launch in the bounded executor — queues excess jobs instead of OOMing the server
+    # Backpressure: reject if too many jobs are already active to prevent OOM
+    _MAX_CONCURRENT_VALIDATION_JOBS = int(os.environ.get("VALIDATION_MAX_CONCURRENT", "3"))
+    with _validation_jobs_lock:
+        active_count = sum(
+            1 for j in _validation_jobs.values()
+            if j.get("status") == "running"
+        )
+    if active_count >= _MAX_CONCURRENT_VALIDATION_JOBS:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Server is busy ({active_count} validation jobs running). Please retry in a moment."
+        )
+
     _VALIDATION_EXECUTOR.submit(_run_validation_job, job_id, job_params)
 
     return {"job_id": job_id}
@@ -10218,7 +10231,7 @@ def _run_validation_job(job_id: str, p: dict):
         pl_o_cmp = pl_oracle.select([c for c in compare_cols_needed if c in pl_oracle.columns])
 
         try:
-            joined = pl_l_cmp.join(pl_o_cmp, on=INTERNAL_KEY, suffix="_T", how="inner").rechunk()
+            joined = pl_l_cmp.join(pl_o_cmp, on=INTERNAL_KEY, suffix="_T", how="inner")
         except Exception as join_err:
             logger.error(f"[{job_id[:8]}] Polars join failed: {join_err}")
             raise
@@ -10411,10 +10424,9 @@ def _run_validation_job(job_id: str, p: dict):
         _job_update(job_id, progress=68,
                     stage=f"Missing: {count_missing_oracle:,} in {tgt_label}, {count_missing_ps:,} in {src_label}")
 
-        # Missing-records sheets carry ALL source/target columns (potentially 60+).
-        # 100k×60 = 6M cells takes ~42 s in any Python Excel writer.
-        # Cap Excel to 20k rows (1.2M cells → ~4 s); full data always in CSV.
-        _MISSING_EXCEL_CAP = 20_000
+        # Missing sheets use the same key+comparison column set as the discrepancies tab,
+        # so the same 100k row cap applies. Full data is always in CSV when exceeded.
+        _MISSING_EXCEL_CAP = _EXCEL_ROW_CAP
 
         if count_missing_oracle > _MISSING_EXCEL_CAP:
             legacy_only_pl.drop(INTERNAL_KEY).write_csv(missing_oracle_csv_path)
