@@ -8656,12 +8656,14 @@ def _pl_clean_str_expr(col_name, case_sensitive=True):
     import polars as pl
     expr = (
         pl.col(col_name).cast(pl.Utf8).fill_null("")
-        .str.replace_all(r"\s+", " ")
+        .str.replace_all(r"[\p{Cf}\p{Cc}]", "")   # strip BOM, zero-width, control chars
+        .str.replace_all(r"[\s\p{Z}]+", " ")        # collapse all whitespace/separators
         .str.strip_chars()
         .str.replace_all(",", "")
         .str.replace_all(r"\.0+$", "")
         .str.replace_all("(?i)^nan$", "")
         .str.replace_all("(?i)^none$", "")
+        .str.strip_chars()
         .fill_null("")
     )
     if not case_sensitive:
@@ -8674,6 +8676,9 @@ def _pl_clean_num_expr(col_name):
     import polars as pl
     return (
         pl.col(col_name).cast(pl.Utf8).fill_null("")
+        .str.replace_all(r"[\p{Cf}\p{Cc}]", "")
+        .str.replace_all(r"[\s\p{Z}]+", " ")
+        .str.strip_chars()
         .str.replace_all("%", "")
         .str.replace_all(",", "")
         .str.strip_chars()
@@ -8683,27 +8688,66 @@ def _pl_clean_num_expr(col_name):
     )
 
 def _pl_normalize_key_cols(df, key_cols):
-    """Normalize key columns in Polars: strip, remove .0 suffix, blank out null sentinels."""
+    """Normalize key columns: strip, remove .0 suffix, blank sentinels.
+    Also normalizes date-like key columns to YYYY/MM/DD so cross-file date
+    format differences (e.g. MM/DD/YYYY vs YYYY/MM/DD) don't cause join misses."""
     import polars as pl
+    _KEY_SENT = {'', 'nan', 'none', 'nat'}
     exprs = []
     for col in key_cols:
         if col not in df.columns:
             continue
-        exprs.append(
+        base = (
             pl.col(col).cast(pl.Utf8).fill_null("")
+            .str.replace_all(r"[\p{Cf}\p{Cc}]", "")
+            .str.replace_all(r"[\s\p{Z}]+", " ")
             .str.strip_chars()
             .str.replace(r"\.0+$", "", literal=False)
-            .str.replace_all(r"^(?:nan|None|NaN)$", "")
-            .alias(col)
+            .str.replace_all(r"^(?:nan|None|NaN|NaT)$", "")
         )
+        # Detect date-like key columns and normalise to YYYY/MM/DD
+        try:
+            _samp = df[col].cast(pl.Utf8).fill_null("").head(50).to_list()
+            _vals = [v.strip() for v in _samp if v.strip().lower() not in _KEY_SENT]
+            _is_date = bool(_vals) and sum(
+                1 for v in _vals if _DATE_LIKE_RE.match(v)
+            ) >= max(len(_vals) * 0.6, 1)
+        except Exception:
+            _is_date = False
+        if _is_date:
+            _fmt = _detect_date_fmt(_vals)
+            _parsed = (
+                base.str.strptime(pl.Date, _fmt, strict=False)
+                if _fmt else
+                base.str.to_date(format=None, strict=False)
+            )
+            # Fallback: rows where the detected format didn't parse (mixed-format
+            # columns, or values beyond row 50 that use a different format) get a
+            # second chance via Polars native auto-detection.  This prevents those
+            # rows from retaining their raw un-normalised string in the composite
+            # key and causing false "missing" mismatches against the other side.
+            _fallback = base.str.to_date(format=None, strict=False)
+            expr = (
+                pl.when(_parsed.is_not_null())
+                .then(_parsed.dt.strftime("%Y/%m/%d"))
+                .when(_fallback.is_not_null())
+                .then(_fallback.dt.strftime("%Y/%m/%d"))
+                .otherwise(base)
+            )
+        else:
+            expr = base
+        exprs.append(expr.alias(col))
     return df.with_columns(exprs) if exprs else df
 
 
 def _pl_gen_composite_key(key_cols):
-    """Return a Polars expr that concatenates key columns with '|' separator."""
+    """Return a Polars expr that concatenates key columns with '|' separator.
+    Lowercased and fully whitespace-stripped so incidental spaces in non-date
+    key columns (e.g. 'PER 105900' vs 'PER105900') don't produce key mismatches.
+    Date columns are already 'YYYY/MM/DD' at this point so stripping is a no-op."""
     import polars as pl
     return pl.concat_str(
-        [pl.col(c).cast(pl.Utf8).fill_null("") for c in key_cols],
+        [pl.col(c).cast(pl.Utf8).fill_null("").str.replace_all(r"\s+", "").str.to_lowercase() for c in key_cols],
         separator="|",
     )
 
@@ -8711,17 +8755,18 @@ def _pl_gen_composite_key(key_cols):
 def _pl_add_positional_key(df, key_col):
     """Append row-position-within-group suffix to key_col to handle duplicate keys safely."""
     import polars as pl
+    # Use int_range().over() so each key group always gets 0,1,2,... regardless
+    # of whether the group's rows are consecutive in the frame.  The subtraction
+    # approach (global_rn - min(global_rn)) produces gaps when groups are
+    # interleaved (e.g. global rows 0,3,7 → _rn=0,3,7 instead of 0,1,2).
     return (
-        df.with_row_index("_global_rn")
-        .with_columns(
-            (pl.col("_global_rn") - pl.col("_global_rn").min().over(key_col))
-            .cast(pl.Utf8)
-            .alias("_rn")
+        df.with_columns(
+            pl.int_range(pl.len()).over(key_col).cast(pl.Utf8).alias("_rn")
         )
         .with_columns(
-            (pl.col(key_col) + "|_rn=" + pl.col("_rn")).alias(key_col)
+            (pl.col(key_col) + pl.lit("|_rn=") + pl.col("_rn")).alias(key_col)
         )
-        .drop(["_global_rn", "_rn"])
+        .drop("_rn")
     )
 
 
@@ -9130,11 +9175,11 @@ async def post_validation_excel(
             legacy_df = _f_l_dn.result()
             oracle_renamed = _f_o_dn.result()
 
-        # --- [POLARS-NATIVE] Key Generation ---
+        # --- [POLARS-NATIVE] Key Generation (case-insensitive matching) ---
         logger.info("Generating keys (Polars)...")
-        key_expr = pl.col(key_cols_list[0]).cast(pl.Utf8).fill_null("")
+        key_expr = pl.col(key_cols_list[0]).cast(pl.Utf8).fill_null("").str.to_lowercase()
         for c in key_cols_list[1:]:
-            key_expr = key_expr + pl.lit("|") + pl.col(c).cast(pl.Utf8).fill_null("")
+            key_expr = key_expr + pl.lit("|") + pl.col(c).cast(pl.Utf8).fill_null("").str.to_lowercase()
         legacy_df = legacy_df.with_columns(key_expr.alias(INTERNAL_KEY))
         oracle_renamed = oracle_renamed.with_columns(key_expr.alias(INTERNAL_KEY))
 
@@ -10179,6 +10224,13 @@ def _run_validation_job(job_id: str, p: dict):
             pl_oracle = _f_o_dn.result()
         logger.info(f"[{job_id[:8]}] Date normalisation complete in {time.perf_counter()-_t_date:.2f}s")
 
+        # Second key normalisation pass — aligns any date key columns that the
+        # main date normaliser missed (e.g. when batch strptime failed and the
+        # per-column fallback silently skipped the column).
+        pl_legacy = _pl_normalize_key_cols(pl_legacy, key_cols_list)
+        pl_oracle = _pl_normalize_key_cols(pl_oracle, key_cols_list)
+        logger.info(f"[{job_id[:8]}] Key date normalisation (2nd pass) complete")
+
         # Composite key generation — both sides in parallel
         _job_update(job_id, progress=32, stage="Generating composite keys")
         _key_expr = _pl_gen_composite_key(key_cols_list)
@@ -10212,6 +10264,14 @@ def _run_validation_job(job_id: str, p: dict):
             legacy_key_dupes = _f_l_dup.result()
             oracle_key_dupes = _f_o_dup.result()
         logger.info(f"[{job_id[:8]}] Key duplicates — Legacy: {legacy_key_dupes:,}, Oracle: {oracle_key_dupes:,}")
+
+        # Save original frames BEFORE positional deduplication.
+        # Stage 9 (missing records) must use the original composite key for set-based
+        # anti-join — using positional keys there causes false "missing" reports when
+        # the same record exists in both sides but gets a different _rn position due to
+        # row-order differences or unequal duplicate counts between source and target.
+        pl_legacy_base = pl_legacy
+        pl_oracle_base = pl_oracle
 
         if legacy_key_dupes > 0 or oracle_key_dupes > 0:
             logger.info(f"[{job_id[:8]}] Adding positional row number within each key group")
@@ -10366,6 +10426,24 @@ def _run_validation_job(job_id: str, p: dict):
             discrepancies_pl = discrepancies_pl.join(ctx_pl, on=INTERNAL_KEY, how="left")
 
         total_discrepancies = len(discrepancies_pl)
+        unique_discrepant_records = (
+            discrepancies_pl.select(INTERNAL_KEY).n_unique()
+            if total_discrepancies > 0 else 0
+        )
+
+        # Per-column breakdown from FULL data before any Excel cap is applied.
+        # Building this from the capped validation_df causes the per-column sum
+        # to differ from total_discrepancies when there are >100k discrepancies.
+        column_discrepancy_counts: list = []
+        if total_discrepancies > 0 and "Column Name" in discrepancies_pl.columns:
+            _col_cnt = (
+                discrepancies_pl.select("Column Name")
+                .group_by("Column Name")
+                .agg(pl.len().alias("cnt"))
+                .sort("cnt", descending=True)
+            )
+            for _r in _col_cnt.iter_rows(named=True):
+                column_discrepancy_counts.append(["", _r["Column Name"], int(_r["cnt"]), "", "", ""])
 
         # Always write CSV for large result sets (full fidelity)
         _EXCEL_ROW_CAP = 100_000
@@ -10405,19 +10483,21 @@ def _run_validation_job(job_id: str, p: dict):
         for col in comment_cols:
             validation_df[col] = ""
 
-        # ── Stage 8: Discrepancy Counts ───────────────────────────────
-        column_discrepancy_counts = []
-        if "Status" not in validation_df.columns and not validation_df.empty:
-            col_counts = validation_df["Column Name"].value_counts().sort_values(ascending=False)
-            for col_name, count in col_counts.items():
-                column_discrepancy_counts.append(["", col_name, int(count), "", "", ""])
-
         # ── Stage 9: Missing Records — Polars anti-join on existing frames ─
         _job_update(job_id, progress=64, stage="Finding missing records")
 
-        # Anti-join directly against matched_keys_pl — no pandas.isin() needed
-        legacy_only_pl = pl_legacy.join(matched_keys_pl, on=INTERNAL_KEY, how="anti")
-        oracle_only_pl = pl_oracle.join(matched_keys_pl, on=INTERNAL_KEY, how="anti")
+        # Set-based anti-join on the original (pre-positional) keys.
+        # Using positional keys here produced false "missing" entries whenever duplicate
+        # keys existed: a record present in both sides could land on a different _rn in
+        # each file due to row-order or count differences, making it appear absent.
+        _oracle_uniq_keys = pl_oracle_base.select(INTERNAL_KEY).unique()
+        _legacy_uniq_keys = pl_legacy_base.select(INTERNAL_KEY).unique()
+        # Deduplicate by key so that source-side duplicate rows for the same absent
+        # key are counted as one missing record, not N — matching the business expectation
+        # that a missing KEY is one validation issue regardless of how many source copies exist.
+        legacy_only_pl = pl_legacy_base.join(_oracle_uniq_keys, on=INTERNAL_KEY, how="anti").unique(subset=[INTERNAL_KEY])
+        oracle_only_pl = pl_oracle_base.join(_legacy_uniq_keys, on=INTERNAL_KEY, how="anti").unique(subset=[INTERNAL_KEY])
+        del _oracle_uniq_keys, _legacy_uniq_keys
 
         count_missing_oracle = len(legacy_only_pl)
         count_missing_ps = len(oracle_only_pl)
@@ -10493,7 +10573,7 @@ def _run_validation_job(job_id: str, p: dict):
                 logger.warning(f"[{job_id[:8]}] Could not reload full data CSV for Excel: {csv_err}")
 
         # Free all large Polars frames — pandas results are now held in small DFs
-        del joined, pl_legacy, pl_oracle, matched_keys_pl, legacy_only_pl, oracle_only_pl
+        del joined, pl_legacy, pl_oracle, matched_keys_pl, legacy_only_pl, oracle_only_pl, pl_legacy_base, pl_oracle_base
         gc.collect()
         logger.info(f"[{job_id[:8]}] Polars processing done in {time.time() - start_time:.2f}s")
 
@@ -10516,7 +10596,8 @@ def _run_validation_job(job_id: str, p: dict):
             ["", "", "", "", "", ""],
             ["", "Data Discrepancies Summary", "", "Mythics Comments", "Oracle Comments", "ParkView Comments"],
             *column_discrepancy_counts,
-            ["", "Total Data Discrepancies", f"{total_discrepancies:,}", "", "", ""],
+            ["", "Unique Records with Discrepancies", f"{unique_discrepant_records:,}", "", "", ""],
+            ["", "Total Data Discrepancies (cell-level)", f"{total_discrepancies:,}", "", "", ""],
             ["", "", "", "", "", ""],
             ["", "Total Validation Issues", f"{grand_total:,}", "", "", ""],
         ]
