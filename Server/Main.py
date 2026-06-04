@@ -70,7 +70,8 @@ load_dotenv()
 load_dotenv(dotenv_path=Path(__file__).parent / "api_keys.env", override=False)
 ORACLE_USERNAME = os.getenv("ORACLE_USERNAME")
 ORACLE_PASSWORD = os.getenv("ORACLE_PASSWORD")
-ORACLE_ENV = os.getenv("ORACLE_ENV") 
+ORACLE_ENV = os.getenv("ORACLE_ENV")
+NLP_SERVICE_URL = os.getenv("NLP_SERVICE_URL", "http://localhost:9000")
 
 app = FastAPI(
     title="Excel Transformation API",
@@ -611,7 +612,7 @@ def get_system_status():
     
     # Check NLP Service connectivity (if running on localhost:9000)
     try:
-        response = requests.head("http://localhost:9000/validate", timeout=2)
+        response = requests.head(f"{NLP_SERVICE_URL}/validate", timeout=2)
         status_data["nlpService"] = "online" if response.status_code < 500 else "offline"
     except Exception:
         status_data["nlpService"] = "offline"
@@ -1441,8 +1442,7 @@ async def proxy_nlp_validate(request: Request):
             file = form[key]
             if hasattr(file, 'filename'):
                 files[key] = (file.filename, await file.read(), file.content_type)
-        # Proxy to Flask app (assume running on localhost:9000)
-        flask_url = "http://localhost:9000/validate"
+        flask_url = f"{NLP_SERVICE_URL}/validate"
         response = requests.post(flask_url, files=files)
         return JSONResponse(status_code=response.status_code, content=response.json())
     except Exception as e:

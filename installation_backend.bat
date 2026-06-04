@@ -1,32 +1,45 @@
-﻿@echo off
+@echo off
 setlocal ENABLEEXTENSIONS ENABLEDELAYEDEXPANSION
 color 0A
-title Charlie Tool Backend
 
 :: ======================================================================
-::  CHARLIE TOOL BACKEND  v4.0
-::  All packages live inside Server\.venv -- zero system-Python pollution.
-::  Fast path: healthy venv -> launch immediately (no install overhead).
-::  Handles: pandas build failures, SSL/proxy, port conflicts.
+::  CONFIGURATION  — edit values here only, nowhere else in this file
 :: ======================================================================
+set "APP_TITLE=Charlie Tool Backend"
+set "APP_VERSION=v4.1"
+set "SERVER_FOLDER=Server"
+set "VENV_FOLDER=.venv"
+set "LOG_FILE=backend_install.log"
+set "APP_MODULE=Main:app"
+set "APP_HOST=127.0.0.1"
+set "APP_PORT=8000"
+set "PANDAS_MIN=pandas>=2.1.0"
+set "PANDAS_PINNED=pandas>=2.2.0,<2.3.0"
+set "PIP_RETRIES=3"
+set "PIP_TIMEOUT=90"
+set "VERIFY_PACKAGES=fastapi uvicorn pydantic pydantic_core pandas numpy openpyxl xlsxwriter requests httpx psutil polars pyarrow duckdb dateutil dotenv multipart"
+set "FAST_PATH_CHECK=import fastapi, uvicorn, pydantic, pydantic_core, pandas"
+:: ======================================================================
+
+title %APP_TITLE%
 
 set "ROOT=%~dp0"
-set "SERVER=%ROOT%Server"
-set "VENV=%SERVER%\.venv"
+set "SERVER=%ROOT%%SERVER_FOLDER%"
+set "VENV=%SERVER%\%VENV_FOLDER%"
 set "PY=%VENV%\Scripts\python.exe"
-set "LOG=%ROOT%backend_install.log"
+set "LOG=%ROOT%%LOG_FILE%"
 set "PANDAS_OK=0"
 set "WARN_COUNT=0"
 set "EXIT_CODE=0"
 
 echo. > "%LOG%"
 echo ================================================ >> "%LOG%"
-echo  Charlie Backend v4.0  [%DATE% %TIME%] >> "%LOG%"
+echo  %APP_TITLE% %APP_VERSION%  [%DATE% %TIME%] >> "%LOG%"
 echo ================================================ >> "%LOG%"
 
 echo.
 echo ================================================
-echo   Charlie Tool Backend  -  Production Setup
+echo   %APP_TITLE%  -  Production Setup
 echo ================================================
 echo.
 
@@ -41,12 +54,12 @@ echo [INFO] Working directory: %CD%
 echo [INFO] Working directory: %CD% >> "%LOG%"
 echo.
 
-:: ---- Release port 8000 (two passes) ------------------------------------------
-echo [INIT] Clearing port 8000...
-FOR /F "tokens=5" %%P IN ('netstat -aon 2^>nul ^| findstr /L ":8000 " ^| findstr "LISTENING"') DO (
+:: ---- Release configured port (two passes) ------------------------------------
+echo [INIT] Clearing port %APP_PORT%...
+FOR /F "tokens=5" %%P IN ('netstat -aon 2^>nul ^| findstr /L ":%APP_PORT% " ^| findstr "LISTENING"') DO (
     taskkill /F /T /PID %%P >nul 2>&1
 )
-FOR /F "tokens=5" %%P IN ('netstat -aon 2^>nul ^| findstr /L ":8000 " ^| findstr "LISTENING"') DO (
+FOR /F "tokens=5" %%P IN ('netstat -aon 2^>nul ^| findstr /L ":%APP_PORT% " ^| findstr "LISTENING"') DO (
     taskkill /F /T /PID %%P >nul 2>&1
 )
 echo.
@@ -55,7 +68,7 @@ echo.
 ::  FAST PATH: venv is healthy -> skip all setup and go straight to launch
 :: ==============================================================================
 IF EXIST "%PY%" (
-    "%PY%" -c "import fastapi, uvicorn, pydantic, pydantic_core, pandas" >nul 2>&1
+    "%PY%" -c "%FAST_PATH_CHECK%" >nul 2>&1
     IF !ERRORLEVEL! EQU 0 (
         echo [OK]   venv is healthy -- skipping setup
         echo [FAST] venv healthy -- skipping setup >> "%LOG%"
@@ -85,27 +98,15 @@ for %%E in (py python python3) do (
 
 IF NOT DEFINED SYS_PY (
     echo [FAIL] Python 3 not found in PATH.
-    echo        Install Python 3.10-3.13 from https://www.python.org/downloads/
+    echo        Install Python 3.10 or later from https://www.python.org/downloads/
     echo        Enable "Add python.exe to PATH" during setup.
     echo [FAIL] Python 3 not found >> "%LOG%"
     goto :ABORT
 )
 
 FOR /F "tokens=*" %%V IN ('%SYS_PY% --version 2^>^&1') DO (
-    echo [OK]   %%V  ^(used only to create .venv^)
+    echo [OK]   %%V  ^(used only to create %VENV_FOLDER%^)
     echo [OK]   %%V >> "%LOG%"
-)
-
-:: -- Reject Python 3.14+ (no binary wheels for compiled extensions yet) ---------
-FOR /F "tokens=*" %%M IN ('%SYS_PY% -c "import sys; print(sys.version_info.major)" 2^>^&1') DO SET "PY_MAJ=%%M"
-FOR /F "tokens=*" %%M IN ('%SYS_PY% -c "import sys; print(sys.version_info.minor)" 2^>^&1') DO SET "PY_MIN=%%M"
-IF %PY_MAJ% EQU 3 IF %PY_MIN% GEQ 14 (
-    echo [FAIL] Python 3.%PY_MIN% is not supported.
-    echo        Binary wheels for pydantic-core, polars, pyarrow, fastexcel are not
-    echo        available for Python 3.14+. Please install Python 3.10 - 3.13.
-    echo        https://www.python.org/downloads/release/python-3130/
-    echo [FAIL] Python 3.%PY_MIN% unsupported ^(need 3.10-3.13^) >> "%LOG%"
-    goto :ABORT
 )
 echo.
 
@@ -114,16 +115,16 @@ echo.
 :: ==============================================================================
 echo [2/5] Preparing isolated environment...
 IF NOT EXIST "%VENV%" (
-    echo        Creating .venv ...
+    echo        Creating %VENV_FOLDER% ...
     %SYS_PY% -m venv "%VENV%" 2>>"%LOG%"
     IF !ERRORLEVEL! NEQ 0 (
         echo [FAIL] venv creation failed -- check %LOG%
         echo [FAIL] venv creation failed >> "%LOG%"
         goto :ABORT
     )
-    echo [OK]   .venv created.
+    echo [OK]   %VENV_FOLDER% created.
 ) ELSE (
-    echo [OK]   .venv already exists.
+    echo [OK]   %VENV_FOLDER% already exists.
 )
 echo [INFO] Venv Python: %PY% >> "%LOG%"
 echo.
@@ -155,20 +156,20 @@ IF %ERRORLEVEL% NEQ 0 (
 
 :: Attempt A: binary wheels only (fastest -- no compiler required)
 echo        [A] Binary-only install...
-"%PY%" -m pip install -r _req_base.txt --only-binary=:all: --upgrade --retries 3 --timeout 90 -q 2>>"%LOG%"
+"%PY%" -m pip install -r _req_base.txt --only-binary=:all: --upgrade --retries %PIP_RETRIES% --timeout %PIP_TIMEOUT% -q 2>>"%LOG%"
 set "BASE_OK=%ERRORLEVEL%"
 
 :: Attempt B: allow source builds
 IF %BASE_OK% NEQ 0 (
     echo        [B] Allowing source builds...
-    "%PY%" -m pip install -r _req_base.txt --upgrade --retries 3 --timeout 90 -q 2>>"%LOG%"
+    "%PY%" -m pip install -r _req_base.txt --upgrade --retries %PIP_RETRIES% --timeout %PIP_TIMEOUT% -q 2>>"%LOG%"
     set "BASE_OK=!ERRORLEVEL!"
 )
 
 :: Attempt C: SSL bypass for corporate proxies
 IF %BASE_OK% NEQ 0 (
     echo        [C] SSL-bypass mode...
-    "%PY%" -m pip install -r _req_base.txt --upgrade --retries 3 --timeout 90 -q ^
+    "%PY%" -m pip install -r _req_base.txt --upgrade --retries %PIP_RETRIES% --timeout %PIP_TIMEOUT% -q ^
         --trusted-host pypi.org --trusted-host files.pythonhosted.org ^
         --trusted-host pypi.python.org 2>>"%LOG%"
     set "BASE_OK=!ERRORLEVEL!"
@@ -193,21 +194,21 @@ IF %ERRORLEVEL% EQU 0 (
 
 IF %PANDAS_OK% EQU 0 (
     echo        [pandas 1/4] Latest binary wheel...
-    "%PY%" -m pip install "pandas>=2.1.0" --only-binary=:all: --retries 3 --timeout 90 -q 2>>"%LOG%"
+    "%PY%" -m pip install "%PANDAS_MIN%" --only-binary=:all: --retries %PIP_RETRIES% --timeout %PIP_TIMEOUT% -q 2>>"%LOG%"
     "%PY%" -c "import pandas" >nul 2>&1
     IF !ERRORLEVEL! EQU 0 SET PANDAS_OK=1
 )
 
 IF %PANDAS_OK% EQU 0 (
     echo        [pandas 2/4] pandas 2.2.x binary...
-    "%PY%" -m pip install "pandas>=2.2.0,<2.3.0" --only-binary=:all: --retries 3 --timeout 90 -q 2>>"%LOG%"
+    "%PY%" -m pip install "%PANDAS_PINNED%" --only-binary=:all: --retries %PIP_RETRIES% --timeout %PIP_TIMEOUT% -q 2>>"%LOG%"
     "%PY%" -c "import pandas" >nul 2>&1
     IF !ERRORLEVEL! EQU 0 SET PANDAS_OK=1
 )
 
 IF %PANDAS_OK% EQU 0 (
     echo        [pandas 3/4] SSL-bypass binary...
-    "%PY%" -m pip install "pandas>=2.1.0" --only-binary=:all: -q ^
+    "%PY%" -m pip install "%PANDAS_MIN%" --only-binary=:all: -q ^
         --trusted-host pypi.org --trusted-host files.pythonhosted.org ^
         --trusted-host pypi.python.org 2>>"%LOG%"
     "%PY%" -c "import pandas" >nul 2>&1
@@ -238,7 +239,7 @@ IF %PANDAS_OK% EQU 0 (
     echo [FAIL] All pandas strategies exhausted >> "%LOG%"
     echo.
     echo   SOLUTIONS:
-    echo   [1] Use Python 3.12 or 3.13: https://www.python.org/downloads/
+    echo   [1] Use Python 3.10 or later: https://www.python.org/downloads/
     echo   [2] Install Anaconda/Miniconda: https://www.anaconda.com/download
     echo   [3] Install VS C++ Build Tools: https://visualstudio.microsoft.com/visual-cpp-build-tools/
     echo.
@@ -252,7 +253,7 @@ echo.
 echo [5/5] Verifying packages...
 set "WARN_COUNT=0"
 
-for %%M in (fastapi uvicorn pydantic pydantic_core pandas numpy openpyxl xlsxwriter requests httpx psutil polars pyarrow duckdb dateutil dotenv multipart) do (
+for %%M in (%VERIFY_PACKAGES%) do (
     "%PY%" -c "import %%M" >nul 2>&1
     IF !ERRORLEVEL! EQU 0 (
         echo [OK]   %%M
@@ -285,14 +286,14 @@ IF NOT EXIST Main.py (
 echo [START] Launching FastAPI server via venv...
 echo.
 echo ================================================
-echo   URL:   http://127.0.0.1:8000
-echo   Docs:  http://127.0.0.1:8000/docs
+echo   URL:   http://%APP_HOST%:%APP_PORT%
+echo   Docs:  http://%APP_HOST%:%APP_PORT%/docs
 echo   Stop:  CTRL+C
 echo ================================================
 echo.
 echo [INFO] Server launched at %TIME% >> "%LOG%"
 
-"%PY%" -m uvicorn Main:app --reload --port 8000 --host 127.0.0.1
+"%PY%" -m uvicorn %APP_MODULE% --reload --port %APP_PORT% --host %APP_HOST%
 
 set "UVICORN_EXIT=%ERRORLEVEL%"
 echo.
@@ -302,7 +303,7 @@ IF %UVICORN_EXIT% NEQ 0 (
     echo.
     echo   Possible causes:
     echo     - Import error in Main.py ^(see console output above^)
-    echo     - Port 8000 still in use
+    echo     - Port %APP_PORT% still in use
     echo     - Missing file referenced by Main.py
     echo.
     echo   Full log: %LOG%

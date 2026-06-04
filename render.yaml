@@ -1,0 +1,44 @@
+services:
+
+  # ── FastAPI backend ────────────────────────────────────────────────────────
+  - type: web
+    name: charlie-backend
+    runtime: docker
+    dockerfilePath: ./Server/Dockerfile
+    dockerContext: ./Server
+    healthCheckPath: /api/health
+    disk:
+      name: charlie-uploads
+      mountPath: /app/uploads
+      sizeGB: 2
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: ALLOWED_ORIGINS
+        sync: false          # Set this in the Render dashboard to your Vercel URL
+      - key: NLP_SERVICE_URL
+        fromService:
+          name: charlie-nlp
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: ORACLE_USERNAME
+        sync: false
+      - key: ORACLE_PASSWORD
+        sync: false
+      - key: ORACLE_ENV
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+
+  # ── NLP microservice (Flask + Gunicorn) ────────────────────────────────────
+  - type: web
+    name: charlie-nlp
+    runtime: docker
+    dockerfilePath: ./NLP/Dockerfile
+    dockerContext: ./NLP
+    healthCheckPath: /health
+    envVars:
+      - key: OLLAMA_HOST
+        value: ""           # Leave blank — Ollama is not available on Render
+      - key: OLLAMA_MODEL
+        value: mistral
