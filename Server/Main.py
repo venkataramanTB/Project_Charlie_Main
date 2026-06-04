@@ -9786,6 +9786,17 @@ def _job_get(job_id: str) -> Optional[Dict]:
         return _validation_jobs.get(job_id, {}).copy()
 
 
+class JobCancelledError(Exception):
+    """Raised inside _run_validation_job when the user cancels."""
+
+
+def _check_cancelled(job_id: str):
+    """Raise JobCancelledError if the job has been flagged for cancellation."""
+    job = _job_get(job_id)
+    if job.get("status") == "cancelling":
+        raise JobCancelledError(f"Job {job_id[:8]} cancelled by user")
+
+
 # ── Stale job cleanup (runs on every new job submission) ─────────────
 _STALE_JOB_MAX_AGE = 60 * 60  # 1 hour
 
@@ -9795,7 +9806,7 @@ def _cleanup_stale_jobs():
     stale_ids = []
     with _validation_jobs_lock:
         for jid, job in _validation_jobs.items():
-            if job.get("status") in ("complete", "failed"):
+            if job.get("status") in ("complete", "failed", "cancelled"):
                 age = now - job.get("started_at", now)
                 if age > _STALE_JOB_MAX_AGE:
                     stale_ids.append(jid)
@@ -9842,7 +9853,7 @@ async def post_validation_large_scale(
     with _validation_jobs_lock:
         _done_ids = [
             jid for jid, j in _validation_jobs.items()
-            if j.get("status") in ("complete", "failed")
+            if j.get("status") in ("complete", "failed", "cancelled")
         ]
         for jid in _done_ids:
             _job = _validation_jobs.pop(jid, {})
@@ -10134,6 +10145,25 @@ async def get_validation_status(job_id: str):
 
 
 
+@app.post("/api/excel/post_validation/cancel/{job_id}")
+async def cancel_validation_job(job_id: str):
+    """
+    Request cooperative cancellation of a running validation job.
+    Sets status to "cancelling"; the background thread checks this flag at each
+    stage boundary and raises JobCancelledError, which transitions the job to
+    "cancelled" and cleans up its temp directory.
+    """
+    job = _job_get(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
+    current = job.get("status")
+    if current != "running":
+        raise HTTPException(status_code=409, detail=f"Job is not running (status: {current})")
+    _job_update(job_id, status="cancelling", stage="Cancelling...")
+    logger.info(f"[{job_id[:8]}] Cancel requested by client")
+    return {"job_id": job_id, "status": "cancelling"}
+
+
 @app.get("/api/excel/post_validation/download/{job_id}")
 async def download_validation_result(job_id: str, background_tasks: BackgroundTasks):
     """
@@ -10143,8 +10173,10 @@ async def download_validation_result(job_id: str, background_tasks: BackgroundTa
     job = _job_get(job_id)
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
-    if job["status"] == "running":
+    if job["status"] in ("running", "cancelling"):
         raise HTTPException(status_code=202, detail="Job still running")
+    if job["status"] == "cancelled":
+        raise HTTPException(status_code=410, detail="Job was cancelled")
     if job["status"] == "failed":
         raise HTTPException(status_code=500, detail=job.get("error", "Unknown error"))
 
@@ -10232,6 +10264,7 @@ def _run_validation_job(job_id: str, p: dict):
             })
         config_df = pd.DataFrame(config_rows)
 
+        _check_cancelled(job_id)
         # ── Stage 2: Load Files — parallel load, stay in Polars, no pandas ─
         _job_update(job_id, progress=8, stage="Reading source and target files (parallel)")
         logger.info(f"[{job_id[:8]}] Loading both files in parallel (calamine engine)...")
@@ -10327,6 +10360,7 @@ def _run_validation_job(job_id: str, p: dict):
         num_comparison_cols = len(cols_to_compare)
         _job_update(job_id, progress=25, stage=f"Validating {num_comparison_cols} mapped columns")
 
+        _check_cancelled(job_id)
         # ── Stage 4: Normalise keys & dates — Polars-native ──────────────
         _job_update(job_id, progress=28, stage="Normalising keys & dates (Polars)")
 
@@ -10581,7 +10615,7 @@ def _run_validation_job(job_id: str, p: dict):
                 column_discrepancy_counts.append(["", _r["Column Name"], int(_r["cnt"]), "", "", ""])
 
         # Always write CSV for large result sets (full fidelity)
-        _EXCEL_ROW_CAP = 100_000
+        _EXCEL_ROW_CAP = 1_000_000
         if total_discrepancies > _EXCEL_ROW_CAP:
             discrepancies_pl.drop(INTERNAL_KEY).write_csv(discrepancies_csv_path)
             logger.info(f"[{job_id[:8]}] Discrepancy CSV written ({total_discrepancies:,} rows)")
