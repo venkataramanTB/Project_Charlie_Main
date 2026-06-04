@@ -10642,11 +10642,16 @@ def _run_validation_job(job_id: str, p: dict):
             oracle_only_pl.head(_MISSING_EXCEL_CAP) if count_missing_ps > _MISSING_EXCEL_CAP
             else oracle_only_pl
         )
-        # Missing sheets show key columns only — the record is absent from the
-        # other side, so comparison-column values have no counterpart to diff against.
-        # Full-fidelity data (all columns, all rows) is always in the CSV file.
-        _disp_l = list(dict.fromkeys(c for c in key_cols_list if c in legacy_for_excel.columns))
-        _disp_o = list(dict.fromkeys(c for c in key_cols_list if c in oracle_for_excel.columns))
+        # Missing sheets: key columns first, then all remaining data columns.
+        # INTERNAL_KEY (_derived_key) is excluded as it's an internal artefact.
+        _disp_l = list(dict.fromkeys(
+            key_cols_list + [c for c in legacy_for_excel.columns if c not in key_cols_list and c != INTERNAL_KEY]
+        ))
+        _disp_l = [c for c in _disp_l if c in legacy_for_excel.columns]
+        _disp_o = list(dict.fromkeys(
+            key_cols_list + [c for c in oracle_for_excel.columns if c not in key_cols_list and c != INTERNAL_KEY]
+        ))
+        _disp_o = [c for c in _disp_o if c in oracle_for_excel.columns]
         legacy_only_df = (
             legacy_for_excel.select(_disp_l) if _disp_l else legacy_for_excel.drop(INTERNAL_KEY)
         ).to_pandas()
