@@ -9836,8 +9836,23 @@ async def post_validation_large_scale(
     if not POLARS_AVAILABLE:
         raise HTTPException(status_code=501, detail="Polars is not installed. Run: pip install polars")
 
-    # Housekeeping: clean up stale jobs from previous runs
-    _cleanup_stale_jobs()
+    # Flush all completed/failed jobs and their temp dirs before starting a new
+    # run — prevents prior-run Polars/pandas memory from lingering in the process.
+    import gc as _gc
+    with _validation_jobs_lock:
+        _done_ids = [
+            jid for jid, j in _validation_jobs.items()
+            if j.get("status") in ("complete", "failed")
+        ]
+        for jid in _done_ids:
+            _job = _validation_jobs.pop(jid, {})
+            _td = _job.get("temp_dir")
+            if _td and os.path.exists(_td):
+                shutil.rmtree(_td, ignore_errors=True)
+    if _done_ids:
+        logger.info(f"[pre-run flush] Cleared {len(_done_ids)} completed job(s) and their temp dirs")
+    _gc.collect()
+    logger.info("[pre-run flush] gc.collect() complete")
 
     # ── Generate job ID & save files to disk ────────────────────────────
     job_id = str(uuid.uuid4())
@@ -10603,21 +10618,21 @@ def _run_validation_job(job_id: str, p: dict):
         for col in comment_cols:
             validation_df[col] = ""
 
-        # ── Stage 9: Missing Records — Polars anti-join on existing frames ─
+        # ── Stage 9: Missing Records — heap/set search (O(n), row-level VLOOKUP match) ─
         _job_update(job_id, progress=64, stage="Finding missing records")
 
-        # Set-based anti-join on the original (pre-positional) keys.
-        # Using positional keys here produced false "missing" entries whenever duplicate
-        # keys existed: a record present in both sides could land on a different _rn in
-        # each file due to row-order or count differences, making it appear absent.
-        _oracle_uniq_keys = pl_oracle_base.select(INTERNAL_KEY).unique()
-        _legacy_uniq_keys = pl_legacy_base.select(INTERNAL_KEY).unique()
-        # Deduplicate by key so that source-side duplicate rows for the same absent
-        # key are counted as one missing record, not N — matching the business expectation
-        # that a missing KEY is one validation issue regardless of how many source copies exist.
-        legacy_only_pl = pl_legacy_base.join(_oracle_uniq_keys, on=INTERNAL_KEY, how="anti").unique(subset=[INTERNAL_KEY])
-        oracle_only_pl = pl_oracle_base.join(_legacy_uniq_keys, on=INTERNAL_KEY, how="anti").unique(subset=[INTERNAL_KEY])
-        del _oracle_uniq_keys, _legacy_uniq_keys
+        # Build hash sets from both sides' non-positional composite keys.
+        # Set difference isolates keys present in one side but absent in the other.
+        # Filtering with is_in() keeps ALL rows for each missing key — matches
+        # what a manual VLOOKUP returns (one result row per source row, not per unique key).
+        _oracle_key_set = set(pl_oracle_base[INTERNAL_KEY].to_list())
+        _legacy_key_set = set(pl_legacy_base[INTERNAL_KEY].to_list())
+        _missing_in_oracle = _legacy_key_set - _oracle_key_set
+        _missing_in_ps     = _oracle_key_set - _legacy_key_set
+
+        legacy_only_pl = pl_legacy_base.filter(pl.col(INTERNAL_KEY).is_in(_missing_in_oracle))
+        oracle_only_pl = pl_oracle_base.filter(pl.col(INTERNAL_KEY).is_in(_missing_in_ps))
+        del _oracle_key_set, _legacy_key_set, _missing_in_oracle, _missing_in_ps
 
         count_missing_oracle = len(legacy_only_pl)
         count_missing_ps = len(oracle_only_pl)
@@ -10642,16 +10657,11 @@ def _run_validation_job(job_id: str, p: dict):
             oracle_only_pl.head(_MISSING_EXCEL_CAP) if count_missing_ps > _MISSING_EXCEL_CAP
             else oracle_only_pl
         )
-        # Missing sheets: key columns first, then all remaining data columns.
-        # INTERNAL_KEY (_derived_key) is excluded as it's an internal artefact.
-        _disp_l = list(dict.fromkeys(
-            key_cols_list + [c for c in legacy_for_excel.columns if c not in key_cols_list and c != INTERNAL_KEY]
-        ))
-        _disp_l = [c for c in _disp_l if c in legacy_for_excel.columns]
-        _disp_o = list(dict.fromkeys(
-            key_cols_list + [c for c in oracle_for_excel.columns if c not in key_cols_list and c != INTERNAL_KEY]
-        ))
-        _disp_o = [c for c in _disp_o if c in oracle_for_excel.columns]
+        # Missing sheets: all data columns except the internal _derived_key.
+        # Key columns are already in the frame — no dependency on key_cols_list
+        # name-matching so nothing can be silently dropped.
+        _disp_l = [c for c in legacy_for_excel.columns if c != INTERNAL_KEY]
+        _disp_o = [c for c in oracle_for_excel.columns if c != INTERNAL_KEY]
         legacy_only_df = (
             legacy_for_excel.select(_disp_l) if _disp_l else legacy_for_excel.drop(INTERNAL_KEY)
         ).to_pandas()
