@@ -8828,24 +8828,32 @@ def _pl_normalize_key_cols(df, key_cols):
             _is_date = False
         if _is_date:
             _fmt = _detect_date_fmt(_vals)
-            _parsed = (
+            _primary = (
                 base.str.strptime(pl.Date, _fmt, strict=False)
-                if _fmt else
-                base.str.to_date(format=None, strict=False)
+                if _fmt else None
             )
-            # Fallback: rows where the detected format didn't parse (mixed-format
-            # columns, or values beyond row 50 that use a different format) get a
-            # second chance via Polars native auto-detection.  This prevents those
-            # rows from retaining their raw un-normalised string in the composite
-            # key and causing false "missing" mismatches against the other side.
-            _fallback = base.str.to_date(format=None, strict=False)
-            expr = (
-                pl.when(_parsed.is_not_null())
-                .then(_parsed.dt.strftime("%Y/%m/%d"))
-                .when(_fallback.is_not_null())
-                .then(_fallback.dt.strftime("%Y/%m/%d"))
-                .otherwise(base)
+            # Fallback: try every other date-only format via pl.coalesce so that
+            # rows the primary format missed (mixed formats, values beyond row 50)
+            # still normalise to YYYY/MM/DD.  Explicit strptime(strict=False) per
+            # format avoids the ComputeError that str.to_date(format=None) raises
+            # when Polars cannot auto-detect a format from the column values.
+            _alt_fmts = [
+                f for f in _COMMON_DATE_FORMATS
+                if "H" not in f and "M" not in f and f != _fmt
+            ]
+            _candidates = (
+                ([_primary] if _primary is not None else [])
+                + [base.str.strptime(pl.Date, f, strict=False) for f in _alt_fmts]
             )
+            if _candidates:
+                _best = pl.coalesce(_candidates)
+                expr = (
+                    pl.when(_best.is_not_null())
+                    .then(_best.dt.strftime("%Y/%m/%d"))
+                    .otherwise(base)
+                )
+            else:
+                expr = base
         else:
             expr = base
         exprs.append(expr.alias(col))
@@ -10634,12 +10642,11 @@ def _run_validation_job(job_id: str, p: dict):
             oracle_only_pl.head(_MISSING_EXCEL_CAP) if count_missing_ps > _MISSING_EXCEL_CAP
             else oracle_only_pl
         )
-        # Excel sheet: key + comparison columns only.
-        # Non-validated source/target columns add 40–50 extra cols to a sheet
-        # that can already be 100k rows — inflating cell count 4× for no analysis
-        # value. Full-fidelity data (all columns, all rows) is in the CSV file.
-        _disp_l = list(dict.fromkeys(c for c in (key_cols_list + cols_to_compare) if c in legacy_for_excel.columns))
-        _disp_o = list(dict.fromkeys(c for c in (key_cols_list + cols_to_compare) if c in oracle_for_excel.columns))
+        # Missing sheets show key columns only — the record is absent from the
+        # other side, so comparison-column values have no counterpart to diff against.
+        # Full-fidelity data (all columns, all rows) is always in the CSV file.
+        _disp_l = list(dict.fromkeys(c for c in key_cols_list if c in legacy_for_excel.columns))
+        _disp_o = list(dict.fromkeys(c for c in key_cols_list if c in oracle_for_excel.columns))
         legacy_only_df = (
             legacy_for_excel.select(_disp_l) if _disp_l else legacy_for_excel.drop(INTERNAL_KEY)
         ).to_pandas()
