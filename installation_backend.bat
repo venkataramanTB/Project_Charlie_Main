@@ -95,6 +95,18 @@ FOR /F "tokens=*" %%V IN ('%SYS_PY% --version 2^>^&1') DO (
     echo [OK]   %%V  ^(used only to create .venv^)
     echo [OK]   %%V >> "%LOG%"
 )
+
+:: -- Reject Python 3.14+ (no binary wheels for compiled extensions yet) ---------
+FOR /F "tokens=*" %%M IN ('%SYS_PY% -c "import sys; print(sys.version_info.major)" 2^>^&1') DO SET "PY_MAJ=%%M"
+FOR /F "tokens=*" %%M IN ('%SYS_PY% -c "import sys; print(sys.version_info.minor)" 2^>^&1') DO SET "PY_MIN=%%M"
+IF %PY_MAJ% EQU 3 IF %PY_MIN% GEQ 14 (
+    echo [FAIL] Python 3.%PY_MIN% is not supported.
+    echo        Binary wheels for pydantic-core, polars, pyarrow, fastexcel are not
+    echo        available for Python 3.14+. Please install Python 3.10 - 3.13.
+    echo        https://www.python.org/downloads/release/python-3130/
+    echo [FAIL] Python 3.%PY_MIN% unsupported ^(need 3.10-3.13^) >> "%LOG%"
+    goto :ABORT
+)
 echo.
 
 :: ==============================================================================
