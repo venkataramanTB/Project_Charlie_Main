@@ -159,7 +159,7 @@ const Hierarchy = () => {
           <h2>⚠️ Error</h2>
           <p>{error}</p>
           <p style={{ fontSize: '0.9rem', color: '#666' }}>
-            Make sure the backend API is running on localhost:8000
+            Make sure the backend API is reachable
           </p>
         </div>
       </div>

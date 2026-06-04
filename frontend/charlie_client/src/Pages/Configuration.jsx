@@ -444,7 +444,7 @@ export default function Configuration() {
   const cardRef = useRef(null);
 
   /* ── API base (matches api.js) ── */
-  const apiEndPoint = process.env.REACT_APP_API_ENDPOINT || "http://localhost:8000";
+  const apiEndPoint = (process.env.REACT_APP_API_URL || "http://localhost:8000/api").replace(/\/api\/?$/, "");
 
   /* ─── Card entrance animation ─── */
   useEffect(() => {

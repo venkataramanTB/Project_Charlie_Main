@@ -45,3 +45,4 @@ Server/api_keys.env
 /logs/
 .env
 !.env.example
+frontend/charlie_client/.env
