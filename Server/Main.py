@@ -8784,7 +8784,17 @@ def _pl_clean_str_expr(col_name, case_sensitive=True):
 
 
 def _pl_clean_num_expr(col_name):
-    """Polars expression: clean & cast to Float64 for numeric comparison."""
+    """Polars expression: clean & cast to Float64 for numeric comparison.
+
+    Blank values are left as "" so they cast to a true Polars null (not the
+    float NaN sentinel). This matters for the diff-flag logic that consumes
+    this expression: it special-cases null-vs-null (no diff) and
+    null-vs-value (diff) via `cn.is_null() ^ co_expr.is_null()`. If blanks
+    were instead mapped to the literal string "NaN", they would cast to an
+    actual NaN float (is_null() == False), and Polars' float comparison
+    treats `NaN > 0.0001` as True — so two blank cells on both sides would
+    be flagged as a discrepancy. See Data Discrepancies false-positive bug.
+    """
     import polars as pl
     return (
         pl.col(col_name).cast(pl.Utf8).fill_null("")
@@ -8794,68 +8804,41 @@ def _pl_clean_num_expr(col_name):
         .str.replace_all("%", "")
         .str.replace_all(",", "")
         .str.strip_chars()
-        .str.replace_all("^$", "NaN")
         .cast(pl.Float64, strict=False)
         .round(4)
     )
 
 def _pl_normalize_key_cols(df, key_cols):
-    """Normalize key columns: strip, remove .0 suffix, blank sentinels.
-    Also normalizes date-like key columns to YYYY/MM/DD so cross-file date
-    format differences (e.g. MM/DD/YYYY vs YYYY/MM/DD) don't cause join misses."""
+    """Normalize key columns: strip invisible chars, collapse whitespace, remove .0
+    suffix, blank sentinels (nan/None/NaT). Safe transforms only — no date parsing,
+    so account numbers that look like dates are never silently rewritten.
+
+    Float64/Float32 columns are cast through Int64 before converting to string so
+    that large integer-valued account numbers (e.g. 59385380027419296) produce a
+    plain decimal string rather than scientific notation ('5.938538e16'), which
+    would prevent the join from matching the corresponding text column on the other
+    side. Non-integer floats and values outside Int64 range fall back to Utf8 cast."""
     import polars as pl
-    _KEY_SENT = {'', 'nan', 'none', 'nat'}
     exprs = []
     for col in key_cols:
         if col not in df.columns:
             continue
-        base = (
-            pl.col(col).cast(pl.Utf8).fill_null("")
+        dtype = df.schema[col]
+        if dtype in (pl.Float32, pl.Float64):
+            _as_int = pl.col(col).cast(pl.Int64, strict=False)
+            _initial = pl.when(
+                _as_int.is_not_null() & (_as_int.cast(pl.Float64) == pl.col(col))
+            ).then(_as_int.cast(pl.Utf8)).otherwise(pl.col(col).cast(pl.Utf8))
+        else:
+            _initial = pl.col(col).cast(pl.Utf8)
+        expr = (
+            _initial.fill_null("")
             .str.replace_all(r"[\p{Cf}\p{Cc}]", "")
             .str.replace_all(r"[\s\p{Z}]+", " ")
             .str.strip_chars()
             .str.replace(r"\.0+$", "", literal=False)
             .str.replace_all(r"^(?:nan|None|NaN|NaT)$", "")
         )
-        # Detect date-like key columns and normalise to YYYY/MM/DD
-        try:
-            _samp = df[col].cast(pl.Utf8).fill_null("").head(50).to_list()
-            _vals = [v.strip() for v in _samp if v.strip().lower() not in _KEY_SENT]
-            _is_date = bool(_vals) and sum(
-                1 for v in _vals if _DATE_LIKE_RE.match(v)
-            ) >= max(len(_vals) * 0.6, 1)
-        except Exception:
-            _is_date = False
-        if _is_date:
-            _fmt = _detect_date_fmt(_vals)
-            _primary = (
-                base.str.strptime(pl.Date, _fmt, strict=False)
-                if _fmt else None
-            )
-            # Fallback: try every other date-only format via pl.coalesce so that
-            # rows the primary format missed (mixed formats, values beyond row 50)
-            # still normalise to YYYY/MM/DD.  Explicit strptime(strict=False) per
-            # format avoids the ComputeError that str.to_date(format=None) raises
-            # when Polars cannot auto-detect a format from the column values.
-            _alt_fmts = [
-                f for f in _COMMON_DATE_FORMATS
-                if "H" not in f and "M" not in f and f != _fmt
-            ]
-            _candidates = (
-                ([_primary] if _primary is not None else [])
-                + [base.str.strptime(pl.Date, f, strict=False) for f in _alt_fmts]
-            )
-            if _candidates:
-                _best = pl.coalesce(_candidates)
-                expr = (
-                    pl.when(_best.is_not_null())
-                    .then(_best.dt.strftime("%Y/%m/%d"))
-                    .otherwise(base)
-                )
-            else:
-                expr = base
-        else:
-            expr = base
         exprs.append(expr.alias(col))
     return df.with_columns(exprs) if exprs else df
 
@@ -9264,20 +9247,8 @@ async def post_validation_excel(
 
         # --- [POLARS-NATIVE] Normalize Key Columns ---
         logger.info("Normalizing Key Columns (Polars)...")
-        key_norm_exprs = [
-            pl.col(col).cast(pl.Utf8).fill_null("")
-            .str.strip_chars()
-            .str.replace_all(r"\.0+$", "")
-            .str.replace_all("^nan$", "")
-            .str.replace_all("^None$", "")
-            .str.replace_all("^NaN$", "")
-            .alias(col)
-            for col in key_cols_list
-            if col in legacy_df.columns
-        ]
-        if key_norm_exprs:
-            legacy_df = legacy_df.with_columns(key_norm_exprs)
-            oracle_renamed = oracle_renamed.with_columns(key_norm_exprs)
+        legacy_df = _pl_normalize_key_cols(legacy_df, key_cols_list)
+        oracle_renamed = _pl_normalize_key_cols(oracle_renamed, key_cols_list)
 
         # --- [POLARS-NATIVE] Date Normalization (parallel — both sides at once) ---
         logger.info("Normalizing dates (Polars, parallel, auto-detection)...")
@@ -9558,7 +9529,7 @@ async def post_validation_excel(
 
                     # Center align Yes / No / Validate columns
                     if str(cell.value).strip().lower() in {"yes", "no"}:
-                        cell.alignment = align_center
+                        cell.alignment = align_center                                                    
 
             # Auto column width
             for col in ws.iter_cols(max_row=ws.max_row):
@@ -10696,11 +10667,29 @@ def _run_validation_job(job_id: str, p: dict):
         # name-matching so nothing can be silently dropped.
         _disp_l = [c for c in legacy_for_excel.columns if c != INTERNAL_KEY]
         _disp_o = [c for c in oracle_for_excel.columns if c != INTERNAL_KEY]
+
+        def _cast_int_floats(df):
+            """Cast Float64/Float32 columns whose values are all integers to Int64.
+            Prevents xlsxwriter from writing large integers (e.g. 59385380027419296)
+            as IEEE-754 doubles, which Excel would display as rounded scientific notation."""
+            exprs = []
+            for col, dt in df.schema.items():
+                if dt not in (pl.Float32, pl.Float64):
+                    continue
+                _as_int = pl.col(col).cast(pl.Int64, strict=False)
+                exprs.append(
+                    pl.when(_as_int.is_not_null() & (_as_int.cast(pl.Float64) == pl.col(col)))
+                    .then(_as_int.cast(pl.Utf8))
+                    .otherwise(pl.col(col).cast(pl.Utf8))
+                    .alias(col)
+                )
+            return df.with_columns(exprs) if exprs else df
+
         legacy_only_df = (
-            legacy_for_excel.select(_disp_l) if _disp_l else legacy_for_excel.drop(INTERNAL_KEY)
+            _cast_int_floats(legacy_for_excel.select(_disp_l) if _disp_l else legacy_for_excel.drop(INTERNAL_KEY))
         ).to_pandas()
         oracle_only_df = (
-            oracle_for_excel.select(_disp_o) if _disp_o else oracle_for_excel.drop(INTERNAL_KEY)
+            _cast_int_floats(oracle_for_excel.select(_disp_o) if _disp_o else oracle_for_excel.drop(INTERNAL_KEY))
         ).to_pandas()
         del legacy_for_excel, oracle_for_excel
         for col in comment_cols:
